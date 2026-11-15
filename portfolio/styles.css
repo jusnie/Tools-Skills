@@ -452,7 +452,7 @@ html {
 
 .sprite-set {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -461,9 +461,11 @@ html {
 
 .sprite-set li {
   display: grid;
+  grid-template-rows: 80px auto;
+  align-content: space-between;
   justify-items: center;
-  gap: 14px;
-  padding: 22px 8px 14px;
+  gap: 10px;
+  padding: 16px 8px 14px;
   background: var(--paper-hi);
   border: 2px solid var(--ink);
   transition: background-color 140ms var(--ease);
@@ -476,6 +478,12 @@ html {
 .sprite-set img {
   width: 64px;
   height: 64px;
+  align-self: end;
+}
+
+.sprite-set__avatar img {
+  width: 80px;
+  height: 80px;
 }
 
 .sprite-set span {
@@ -906,23 +914,26 @@ html {
 
 .about__figure {
   margin: 0;
-  padding: 10px;
-  background: var(--ink);
+  padding: 14px;
+  background: var(--paper-hi);
+  border: 2px solid var(--ink);
   box-shadow: var(--shadow) var(--shadow) 0 var(--ink);
+  text-align: center;
 }
 
 .about__figure img {
   display: block;
-  width: 100%;
+  width: min(100%, 200px);
   height: auto;
-  border: 1px solid var(--ink-2);
+  margin: 0 auto;
 }
 
 .about__figure figcaption {
-  padding: 10px 2px 2px;
+  padding: 12px 2px 2px;
+  border-top: 1px solid var(--hair);
   font-family: var(--mono);
   font-size: 10.5px;
-  color: #b3bbc2;
+  color: var(--muted);
 }
 
 /* ---------- contact ---------- */
@@ -1099,7 +1110,7 @@ html {
   }
 
   .sprite-set {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .work .card,

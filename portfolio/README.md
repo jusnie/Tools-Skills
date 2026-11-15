@@ -13,14 +13,16 @@ portfolio/
 ├── main.js                 menu, nav spy, copy button, Paddle
 ├── DESIGN.md               the committed world: tokens and the reasons behind them
 ├── assets/
-│   ├── img/                key art + four scenes, WebP + PNG fallback
+│   ├── img/                key art + three scenes, WebP + PNG fallback
 │   ├── fonts/              paperboy.woff2 (1.4KB) + .ttf, the display face
-│   └── svg/                sprite mark, favicon and the six sheet sprites
+│   └── svg/                mark, favicon, six sheet sprites + the avatar pair
 └── tools/
     ├── pixelfont.mjs       5×7 bitmap face → sprite mark, and the glyph dump
     ├── build-font.py       that bitmap → a real TTF/WOFF2 display face
     ├── avatar.sprite.json  the 16×16 mark, as ASCII art plus a colour key
     ├── sprites/            six 16×16 sprites for the sheet, same format
+    │   ├── avatar.json      the 40×40 portrait, drawn from a photo
+    │   └── avatar-full.json the 40×64 full body: hood, headphones, onyx v5 pants
     ├── preview.py          rasterizes the generated SVGs without a browser
     ├── build-images.sh     generated art → shared palette → pixel PNG
     ├── palette.txt         35 colours, in order
@@ -43,10 +45,10 @@ Two things carry the game-portfolio argument, both static:
 
 - **Key art** (`assets/img/keyart.*`, 384 × 216) in a 2px frame with a credits
   strip — title, engine, status. No video, no canvas.
-- **A sprite sheet** at `#art`: six 16 × 16 sprites authored as ASCII in
-  `tools/sprites/*.json`, compiled to SVG by `tools/pixelfont.mjs`, and shown at
-  4× on the same 35 colours as the scenes. Change a sprite by editing its JSON and
-  rerunning:
+- **A sprite sheet** at `#art`: six 16 × 16 sprites plus the author's own 40 × 40
+  portrait, authored as ASCII in `tools/sprites/*.json`, compiled to SVG by
+  `tools/pixelfont.mjs`, and shown at 4× on the same 35 colours as the scenes.
+  Change a sprite by editing its JSON and rerunning:
 
 ```bash
 node tools/pixelfont.mjs --sprite tools/sprites/sheep.json --out assets/svg/sprite-sheep.svg --scale 1

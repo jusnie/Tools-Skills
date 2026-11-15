@@ -55,7 +55,7 @@ if (!existsSync(resolve(root, 'assets/fonts/paperboy.woff2'))) problems.push('mi
 if (doc.querySelectorAll('h1').length !== 1) problems.push('expected exactly one h1');
 if (doc.querySelector('canvas')) problems.push('canvas found: the cabinet was removed');
 if (!doc.getElementById('art')) problems.push('missing the art section');
-if (doc.querySelectorAll('.sprite-set li').length !== 6) problems.push('expected six sprites');
+if (doc.querySelectorAll('.sprite-set li').length !== 7) problems.push('expected seven sprites');
 for (const image of doc.querySelectorAll('img')) {
   if (!image.hasAttribute('alt')) problems.push(`img without alt: ${image.getAttribute('src')}`);
 }

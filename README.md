@@ -6,8 +6,8 @@ and for the things they build.
 ## Site
 
 [`portfolio/`](portfolio) — a one-page game portfolio in paper, ink and pixel art:
-key art in a framed sleeve, four projects, a six-sprite sheet drawn at 16 × 16,
-and an authored display face. Static HTML, CSS and one small script. Run it with
+key art in a framed sleeve, four projects, a sprite sheet drawn at 16 × 16,
+a 40 × 64 character of the author, and an authored display face. Static HTML, CSS and one small script. Run it with
 `python3 -m http.server 8000 --directory portfolio`.
 
 ## Skills
