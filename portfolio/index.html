@@ -15,8 +15,19 @@
 <link rel="preload" href="assets/fonts/paperboy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="is-lifting">
 <a class="skip" href="#main">Skip to content</a>
+
+<!-- loading screen: the character benches, one rep per 10% of real load -->
+<div class="lift" id="lift" aria-hidden="true">
+  <img class="lift__frame" id="lift-frame" src="assets/svg/sprite-bench-1.svg" alt="" width="288" height="192" fetchpriority="high">
+  <div class="lift__meter">
+    <p class="lift__pct"><span id="lift-pct">0</span>%</p>
+    <div class="lift__track"><span class="lift__bar" id="lift-bar"></span></div>
+    <p class="lift__reps">rep <span id="lift-rep">1</span> of 5</p>
+  </div>
+</div>
+<noscript><style>.lift{display:none}body.is-lifting{overflow:auto}</style></noscript>
 
 <header class="nav">
   <div class="wrap nav__inner">

@@ -21,6 +21,7 @@ portfolio/
     ├── build-font.py       that bitmap → a real TTF/WOFF2 display face
     ├── avatar.sprite.json  the 16×16 mark, as ASCII art plus a colour key
     ├── sprites/            six 16×16 sprites for the sheet, same format
+    │   ├── bench-1..4.json  the loading-screen lift, one per bar height
     │   ├── avatar.json      the 40×40 portrait, drawn from a photo
     │   └── avatar-full.json the 40×64 full body: hood, headphones, onyx v5 pants
     ├── preview.py          rasterizes the generated SVGs without a browser
@@ -53,6 +54,28 @@ Two things carry the game-portfolio argument, both static:
 ```bash
 node tools/pixelfont.mjs --sprite tools/sprites/sheep.json --out assets/svg/sprite-sheep.svg --scale 1
 python3 tools/preview.py assets/svg/sprite-sheep.svg /tmp/sheep.png 8   # look at it
+```
+
+## The lift
+
+The page opens on a 72 × 48 bench-press scene that doubles as the loading bar.
+One rep is 20% of the bar, so `rep N of 5` and the percentage are the same fact
+told twice; the bar's height between frames is the progress.
+
+It is driven by real load, not a spinner on a timer: `main.js` waits on the four
+sprite frames, `document.fonts.ready` and `window.load`, and the bar's ramp is
+**capped at 92%** until all three resolve, so a slow asset shows up as a stalled
+bar rather than a lie. The minimum on-screen time is 1.9s (below that the lift
+would flash), it plays once per session (`sessionStorage`), and
+`prefers-reduced-motion` removes it entirely. There is an 8s failsafe so a hung
+asset can never trap the page behind the lift.
+
+Four frames, four JSONs, same pipeline:
+
+```bash
+for i in 1 2 3 4; do
+  node tools/pixelfont.mjs --sprite tools/sprites/bench-$i.json --out assets/svg/sprite-bench-$i.svg --scale 1
+done
 ```
 
 ## The face

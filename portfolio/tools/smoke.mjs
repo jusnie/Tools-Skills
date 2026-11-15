@@ -26,6 +26,10 @@ window.IntersectionObserver = class {
   }
 };
 Object.defineProperty(window.navigator, 'clipboard', { value: { writeText: async () => {} } });
+/* the bench-press intro is a once-per-session animation, so the harness opts out of
+   it (it needs real image loading and rAF timing) and only checks the markup */
+if (!doc.getElementById('lift')) problems.push('missing the loading screen');
+window.sessionStorage.setItem('lift-seen', '1');
 
 const errors = [];
 window.addEventListener('error', (event) => errors.push(String(event.error || event.message)));
