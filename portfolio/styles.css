@@ -112,18 +112,6 @@ html {
   border: 2px solid var(--paper-lo);
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .skip {
   position: absolute;
   left: 16px;
@@ -272,7 +260,7 @@ html {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  padding-block: 6px;
+  padding-block: 8px;
   color: var(--ink-2);
   border-bottom: 2px solid transparent;
   transition: color 140ms var(--ease), border-color 140ms var(--ease);
@@ -410,112 +398,101 @@ html {
   color: var(--ink-2);
 }
 
-/* ---------- cabinet ---------- */
+/* ---------- hero art ---------- */
 
-.cabinet {
+.hero__art {
   margin: 0;
 }
 
-.cabinet__bezel {
-  background: var(--ink);
-  padding: 12px;
+.frame {
+  border: 2px solid var(--ink);
+  background: var(--paper-hi);
   box-shadow: 8px 8px 0 var(--ink);
 }
 
-.screen {
-  position: relative;
-  background: #f7f2e7;
-  border: 2px solid var(--ink-2);
-}
-
-.screen canvas {
+.frame img {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 192 / 120;
-  image-rendering: pixelated;
-  background: #f7f2e7;
-  touch-action: none;
-  cursor: crosshair;
+  aspect-ratio: 16 / 9;
 }
 
-.screen__overlay {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 14px;
-  padding: 16px;
-  text-align: center;
-  background: rgba(247, 242, 231, 0.95);
-}
-
-.screen__overlay[hidden] {
-  display: none;
-}
-
-.overlay__kicker {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.overlay__title {
-  font-family: var(--mono);
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-
-.hud {
+.frame__bar {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 10px 2px 2px;
+  gap: 16px;
+  padding: 9px 12px;
+  border-top: 2px solid var(--ink);
+  background: var(--paper);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #b3bbc2;
+  color: var(--muted);
 }
 
-.hud__cell b {
-  color: #fbf8f0;
-  font-variant-numeric: tabular-nums;
+.frame__name {
+  margin-right: auto;
+  color: var(--ink);
 }
 
-.hud__btn {
-  padding: 2px 8px;
-  border: 1px solid rgba(237, 228, 212, 0.4);
-  background: none;
-  color: #ede4d4;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  cursor: pointer;
-  transition: border-color 140ms var(--ease), color 140ms var(--ease);
+.frame__state {
+  color: var(--ember);
 }
 
-.hud__btn:hover {
-  border-color: #ede4d4;
-}
-
-.hud__hint {
-  margin-left: auto;
-  color: #8b95a1;
-  letter-spacing: 0.04em;
-  text-transform: none;
-}
-
-.cabinet__caption {
-  margin-top: 20px;
+.hero__art figcaption {
+  margin-top: 18px;
   font-family: var(--mono);
   font-size: 11.5px;
+  line-height: 1.6;
   color: var(--muted);
+}
+
+/* ---------- sprite sheet ---------- */
+
+.sprite-set {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sprite-set li {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 22px 8px 14px;
+  background: var(--paper-hi);
+  border: 2px solid var(--ink);
+  transition: background-color 140ms var(--ease);
+}
+
+.sprite-set li:hover {
+  background: var(--paper);
+}
+
+.sprite-set img {
+  width: 64px;
+  height: 64px;
+}
+
+.sprite-set span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+
+.sprite-lede {
+  margin-top: 24px;
+  max-width: 62ch;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
 }
 
 /* ---------- sections ---------- */
@@ -578,7 +555,8 @@ html {
   grid-column: span 7;
 }
 
-.card:hover {
+.card:hover,
+.card:focus-within {
   transform: translate(-2px, -2px);
   box-shadow: 8px 8px 0 var(--ink);
 }
@@ -654,7 +632,20 @@ html {
   border-top: 1px solid var(--hair);
   font-family: var(--mono);
   font-size: 11px;
+  line-height: 1.7;
   color: var(--muted);
+}
+
+.card__foot a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hair);
+  transition: color 140ms var(--ease), border-color 140ms var(--ease);
+}
+
+.card__foot a:hover {
+  color: var(--ember);
+  border-bottom-color: var(--ember);
 }
 
 /* ---------- lantern mock ---------- */
@@ -1063,7 +1054,7 @@ html {
 }
 
 .hero__copy > *,
-.cabinet {
+.hero__art {
   animation: enter 460ms var(--ease) both;
 }
 
@@ -1083,7 +1074,7 @@ html {
   animation-delay: 200ms;
 }
 
-.cabinet {
+.hero__art {
   animation-delay: 120ms;
 }
 
@@ -1103,8 +1094,12 @@ html {
     max-width: 20ch;
   }
 
-  .cabinet {
+  .hero__art {
     max-width: 560px;
+  }
+
+  .sprite-set {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .work .card,
@@ -1171,14 +1166,6 @@ html {
     justify-content: center;
   }
 
-  .hud {
-    gap: 14px;
-    font-size: 10px;
-  }
-
-  .hud__hint {
-    display: none;
-  }
 
   .card__body {
     padding: 18px 16px 20px;

@@ -9,14 +9,14 @@ the interface recedes. Product: the work of one game developer and pixel artist.
 
 ## World
 
-A printed game manual that came with a cartridge, sitting next to a cabinet that
-is switched on. Paper and ink for the page, ember for the one thing that should
-be touched, and the cabinet's screen as the single lit object.
+A printed game manual that came with a cartridge. Paper and ink for the page,
+ember for the one thing that should be touched, and one piece of key art framed
+like a sleeve, lit from inside by its own scene.
 
 Warm paper was chosen over the genre default of dark mode. A pixel portfolio on
 near-black is the category's uniform; paper makes the art read as printed work
-rather than a screenshot, and it makes the lit cabinet the brightest thing on the
-page instead of the darkest.
+rather than a screenshot, and it makes the one lit scene the brightest thing on
+the page instead of the darkest.
 
 ## Palette
 
@@ -55,28 +55,33 @@ label; a small label above it is a decoration that costs the reader a line.
 ## Space and chrome
 
 - 4px grid throughout; section padding 88px desktop / 64px mobile.
-- Square corners, 2px ink rules, shadow `6px 6px 0 ink` (8px on the cabinet,
-  3–4px on buttons). The hard block shadow is deliberate here: this world is
+- Square corners, 2px ink rules, shadow `6px 6px 0 ink` (8px on the key art
+  frame, 3–4px on buttons). The hard block shadow is deliberate here: this world is
   printed ink on paper, where a shadow has an edge and no blur. It is not the
   neobrutalist default borrowed wholesale — it is the only depth cue the world
   allows, and it is used at four sizes, never softened.
-- One accent, one texture (a 12px grid at 5% on the tools band), one signature:
-  the 8px ember block with a 2px hard shadow. It appears once, in the "currently
-  learning" line, and again as the pixel marker inside the game.
+- One accent, one texture (a 12px grid at 5% on the sprite band), one signature:
+  the 8px ember block with a 2px hard shadow. It appears twice — before the
+  "currently learning" line and as the offset under the wordmark — and nowhere
+  else.
 
 ## Motion
 
-One authored entrance: the hero's four children and the cabinet rise 10px and
+One authored entrance: the hero's four children and the key art rise 10px and
 fade, staggered 60ms, 460ms, `cubic-bezier(0.22, 1, 0.36, 1)`. Hovers are 140ms
-colour/transform changes, presses move 2px into their own shadow. Nothing loops.
-`prefers-reduced-motion` cuts the entrance to 1ms, drops the screen shake and the
-brick debris, and stops smooth scrolling.
+colour and transform changes, presses move 2px into their own shadow, and card
+hover answers `:focus-within` too. Nothing loops. `prefers-reduced-motion` cuts
+entrances and transitions to 1ms and stops smooth scrolling; the state change
+still happens, instantly.
 
 ## Decisions
 
 | Trigger | Decision | Reason |
 | --- | --- | --- |
-| Pixel art is the subject, and every stock pixel site is dark | Warm paper ground, ink text | The art has to look printed, not backlit. Paper also keeps the cabinet the only lit surface, so the game reads as the one bright moment. |
+| Pixel art is the subject, and every stock pixel site is dark | Warm paper ground, ink text | The art has to look printed, not backlit. Paper also keeps the key art the only lit surface, so it reads as the one bright moment. |
+| The page had a canvas minigame in the hero | Removed it; the hero is key art in a framed sleeve with a credits strip | A demo competes with the work it is meant to introduce. The scene is the argument, and the frame plus the credits strip gives it presence a bare screenshot does not. |
+| Art skill is a claim until you see the grid | A six-cell sprite sheet at 16×16, one palette, labelled | People who know the craft read a sprite sheet the way others read case studies. Nothing on it animates, so it is also the cheapest possible proof. |
+| Card feet ended in "case study on request", which is not an action | Each foot is a mailto naming the project in the subject | A portfolio's job is to make the next step one click, and the link states what it does instead of leaving the visitor to guess the address. |
 | Headings would otherwise be the platform sans | Author a 5×7 face and self-host it | A world this specific cannot borrow the system font for its voice. Compiling the bitmap that already draws the sprite costs 1.4KB and no network request. |
 | The face is a grid | Sizes restricted to multiples of 10px | Whole-pixel blocks. A 34px heading would put every font pixel on a fractional boundary and undo the point of the face. |
 | ui-ux-pro-max: the current section should be visible in the nav | Scroll-spy with `aria-current` | On a one-page site the nav is the only map; without it every link looks equally current. |

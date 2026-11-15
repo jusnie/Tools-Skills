@@ -13,13 +13,14 @@ portfolio/
 ├── main.js                 menu, nav spy, copy button, Paddle
 ├── DESIGN.md               the committed world: tokens and the reasons behind them
 ├── assets/
-│   ├── img/                four scenes, real pixel size, WebP + PNG fallback
+│   ├── img/                key art + four scenes, WebP + PNG fallback
 │   ├── fonts/              paperboy.woff2 (1.4KB) + .ttf, the display face
-│   └── svg/                sprite mark and favicon
+│   └── svg/                sprite mark, favicon and the six sheet sprites
 └── tools/
     ├── pixelfont.mjs       5×7 bitmap face → sprite mark, and the glyph dump
     ├── build-font.py       that bitmap → a real TTF/WOFF2 display face
-    ├── avatar.sprite.json  the 16×16 sprite, as ASCII art plus a colour key
+    ├── avatar.sprite.json  the 16×16 mark, as ASCII art plus a colour key
+    ├── sprites/            six 16×16 sprites for the sheet, same format
     ├── preview.py          rasterizes the generated SVGs without a browser
     ├── build-images.sh     generated art → shared palette → pixel PNG
     ├── palette.txt         35 colours, in order
@@ -36,17 +37,21 @@ python3 -m http.server 8000 --directory portfolio
 Then open `http://localhost:8000`. Or serve the folder with anything else; it is
 plain static HTML. `main.js` is a classic script, so it also runs from `file://`.
 
-## The cabinet
+## The art
 
-`Paddle` is a real game on a 192 × 120 canvas, drawn with `fillRect` and scaled
-up with `image-rendering: pixelated`, so the pixels stay square at any size.
+Two things carry the game-portfolio argument, both static:
 
-- ← → or A / D move the paddle, space serves, P pauses, pointer and touch work too.
-- Three lives, four waves of bricks, the ball speeds up as it goes.
-- It pauses itself when the tab is hidden or the cabinet scrolls out of view.
-- With `prefers-reduced-motion` there is no screen shake and no brick debris.
-- Score and lives are real DOM text next to the canvas, and game events are
-  announced through a polite live region, so the cabinet is not a black box.
+- **Key art** (`assets/img/keyart.*`, 384 × 216) in a 2px frame with a credits
+  strip — title, engine, status. No video, no canvas.
+- **A sprite sheet** at `#art`: six 16 × 16 sprites authored as ASCII in
+  `tools/sprites/*.json`, compiled to SVG by `tools/pixelfont.mjs`, and shown at
+  4× on the same 35 colours as the scenes. Change a sprite by editing its JSON and
+  rerunning:
+
+```bash
+node tools/pixelfont.mjs --sprite tools/sprites/sheep.json --out assets/svg/sprite-sheep.svg --scale 1
+python3 tools/preview.py assets/svg/sprite-sheep.svg /tmp/sheep.png 8   # look at it
+```
 
 ## The face
 
@@ -106,9 +111,10 @@ python3 tools/preview.py assets/svg/mark.svg /tmp/mark.png 8
 python3 -c "from PIL import ImageFont; ImageFont.truetype('assets/fonts/paperboy.ttf', 40)"
 ```
 
-`smoke.mjs` boots `index.html` in jsdom with a stubbed canvas, starts the game,
-serves, loses three lives, and checks the overlay, the HUD, pause/resume, the
-mobile menu and every asset path.
+`smoke.mjs` boots `index.html` in jsdom and checks structure: one h1, four nav
+links that all resolve, exactly one current section, six sprites, alt text
+everywhere, no leftover canvas. Then it opens and closes the mobile menu and fails
+on any runtime error. It checks every asset path too, `srcset` included.
 
 ## Deploy
 

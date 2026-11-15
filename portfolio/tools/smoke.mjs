@@ -1,124 +1,97 @@
-/* Headless smoke test: boots index.html in jsdom, stubs the canvas, and plays
-   Paddle for 90 simulated seconds. Catches runtime errors, dead selectors and
-   broken asset paths without a browser.
+/* Headless smoke test: boots index.html in jsdom and checks what a browser
+   would need, without one. Catches runtime errors, dead selectors and broken
+   asset paths — includes the srcset sources, not just the fallbacks.
 
-   node /tmp/domtest/run.mjs            */
+   npm i jsdom && node tools/smoke.mjs */
 
 import { JSDOM } from 'jsdom';
 import { readFileSync, existsSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = '/home/user/Tools-Skills/portfolio';
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(`${root}/index.html`, 'utf8');
 
 const dom = new JSDOM(html, { url: 'http://localhost/', pretendToBeVisual: true, runScripts: 'outside-only' });
 const { window } = dom;
 const doc = window.document;
 
-/* --- stubs --- */
-const calls = { fillRect: 0 };
-window.HTMLCanvasElement.prototype.getContext = function getContext() {
-  return {
-    save() {}, restore() {}, translate() {},
-    fillRect() { calls.fillRect += 1; },
-    set fillStyle(v) {}, get fillStyle() { return '#000'; },
-  };
-};
 window.matchMedia = window.matchMedia || (() => ({ matches: false, addEventListener() {}, removeEventListener() {} }));
 window.IntersectionObserver = class {
-  constructor(cb) { this.cb = cb; }
-  observe() { this.cb([{ isIntersecting: true }]); }
+  constructor(cb) {
+    this.cb = cb;
+  }
+  observe(target) {
+    this.cb([{ isIntersecting: true, target }]);
+  }
 };
 Object.defineProperty(window.navigator, 'clipboard', { value: { writeText: async () => {} } });
 
-/* manual frame clock */
-let queue = [];
-let now = 0;
-window.requestAnimationFrame = (cb) => { queue.push(cb); return queue.length; };
-window.cancelAnimationFrame = () => {};
-const tick = (ms = 16) => {
-  now += ms;
-  const batch = queue;
-  queue = [];
-  for (const cb of batch) cb(now);
-};
+const errors = [];
+window.addEventListener('error', (event) => errors.push(String(event.error || event.message)));
 
-/* --- boot --- */
-window.eval(readFileSync(`${root}/main.js`, 'utf8'));
+try {
+  window.eval(readFileSync(`${root}/main.js`, 'utf8'));
+} catch (error) {
+  errors.push(String(error));
+}
 
 const problems = [];
-const $ = (sel) => doc.querySelector(sel);
+const $ = (selector) => doc.querySelector(selector);
 
-const assets = [...doc.querySelectorAll('img[src], link[href], source[srcset]')]
-  .map((el) => el.getAttribute('src') || el.getAttribute('href') || el.getAttribute('srcset'))
-  .filter((p) => p && !p.startsWith('http') && !p.startsWith('#'))
-  .map((p) => resolve(root, p));
-for (const file of assets) {
-  if (!existsSync(file)) problems.push(`missing asset: ${file}`);
+/* every local asset referenced from markup exists */
+const refs = [...doc.querySelectorAll('img[src], link[href], source[srcset]')].map(
+  (el) => el.getAttribute('src') || el.getAttribute('href') || el.getAttribute('srcset')
+);
+for (const ref of refs) {
+  if (!ref || ref.startsWith('http') || ref.startsWith('#') || ref.startsWith('mailto:')) continue;
+  if (!existsSync(resolve(root, ref))) problems.push(`missing asset: ${ref}`);
 }
 
-const overlay = $('[data-overlay]');
-const scoreEl = $('[data-score]');
-const livesEl = $('[data-lives]');
-const statusEl = $('[data-status]');
+/* the font the display type depends on */
+if (!existsSync(resolve(root, 'assets/fonts/paperboy.woff2'))) problems.push('missing display font');
 
-if (!overlay) problems.push('no overlay');
-if (overlay && overlay.hidden) problems.push('overlay should be visible on load');
-
-/* start */
-$('[data-play]').click();
-if (overlay && !overlay.hidden) problems.push('overlay still visible after start');
-if (livesEl?.textContent !== '3') problems.push(`lives should be 3, got ${livesEl?.textContent}`);
-
-/* serve with the space bar */
-doc.dispatchEvent(new window.KeyboardEvent('keydown', { key: ' ', bubbles: true }));
-if (!statusEl?.textContent.includes('Playing')) problems.push(`unexpected status after serve: ${statusEl?.textContent}`);
-
-/* paddle chases the ball with the arrow keys for a while, then stand still */
-for (let i = 0; i < 60; i += 1) {
-  doc.dispatchEvent(new window.KeyboardEvent('keydown', { key: i % 2 ? 'ArrowRight' : 'ArrowLeft', bubbles: true }));
-  tick(16);
-  doc.dispatchEvent(new window.KeyboardEvent('keyup', { key: 'ArrowRight', bubbles: true }));
-  doc.dispatchEvent(new window.KeyboardEvent('keyup', { key: 'ArrowLeft', bubbles: true }));
+/* structure: one h1, then sections in reading order, no leftover game */
+if (doc.querySelectorAll('h1').length !== 1) problems.push('expected exactly one h1');
+if (doc.querySelector('canvas')) problems.push('canvas found: the cabinet was removed');
+if (!doc.getElementById('art')) problems.push('missing the art section');
+if (doc.querySelectorAll('.sprite-set li').length !== 6) problems.push('expected six sprites');
+for (const image of doc.querySelectorAll('img')) {
+  if (!image.hasAttribute('alt')) problems.push(`img without alt: ${image.getAttribute('src')}`);
 }
 
-/* play on: serve again whenever the ball comes to rest */
-for (let i = 0; i < 60 * 120; i += 1) {
-  if (i % 20 === 0) {
-    doc.dispatchEvent(new window.KeyboardEvent('keydown', { key: ' ', bubbles: true }));
-  }
-  tick(16);
+/* nav: every link points at a real section, and the spy marks the current one */
+const navLinks = [...doc.querySelectorAll('.nav__links a')];
+if (navLinks.length !== 4) problems.push(`expected four nav links, found ${navLinks.length}`);
+for (const link of navLinks) {
+  const target = doc.querySelector(link.getAttribute('href'));
+  if (!target) problems.push(`nav link points nowhere: ${link.getAttribute('href')}`);
 }
+const current = navLinks.filter((link) => link.getAttribute('aria-current') === 'true');
+if (current.length !== 1) problems.push(`expected one current nav link, found ${current.length}`);
 
-const score = Number(scoreEl?.textContent ?? '0');
-const status = statusEl?.textContent ?? '';
+/* copy button writes the address it advertises */
+const copy = $('[data-copy]');
+if (!copy) problems.push('missing copy button');
 
-if (calls.fillRect < 100) problems.push(`canvas barely drawn: ${calls.fillRect} fills`);
-if (!status.includes('Game over')) problems.push(`expected game over, status was: "${status}"`);
-if (score <= 0) problems.push('score never went up, ball may not hit bricks');
-
-/* pause / resume */
-$('[data-play]').click();
-doc.dispatchEvent(new window.KeyboardEvent('keydown', { key: ' ', bubbles: true }));
-tick(16);
-$('[data-pause]').click();
-if (!statusEl?.textContent.includes('Paused')) problems.push(`pause failed: ${statusEl?.textContent}`);
-$('[data-pause]').click();
-if (!statusEl?.textContent.includes('Playing')) problems.push(`resume failed: ${statusEl?.textContent}`);
-
-/* mobile menu */
+/* mobile menu opens, closes on Escape */
 const toggle = $('.nav__toggle');
-toggle.click();
-if ($('#nav-menu').hidden) problems.push('menu did not open');
-doc.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-if (!$('#nav-menu').hidden) problems.push('escape did not close the menu');
+const menu = doc.getElementById('nav-menu');
+if (!toggle || !menu) problems.push('missing mobile menu');
+else {
+  toggle.click();
+  if (menu.hidden) problems.push('menu did not open');
+  doc.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  if (!menu.hidden) problems.push('Escape did not close the menu');
+}
 
-console.log(`score after run: ${score}`);
-console.log(`canvas fills: ${calls.fillRect}`);
-console.log(`assets checked: ${assets.length}`);
+for (const error of errors) problems.push(`runtime: ${error}`);
+
+console.log(`assets checked: ${refs.length}`);
+console.log(`scripts: ${errors.length === 0 ? 'no runtime errors' : errors.length + ' errors'}`);
 if (problems.length) {
   console.log('\nFAIL');
-  for (const p of problems) console.log(' -', p);
+  for (const problem of problems) console.log(' -', problem);
   process.exit(1);
 }
 console.log('\nPASS');

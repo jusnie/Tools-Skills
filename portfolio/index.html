@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jusnie — games and interfaces, drawn pixel by pixel</title>
+<title>Jusnie — games, one pixel at a time</title>
 <meta name="description" content="Portfolio of Jusnie, an independent game developer in Quezon City: small games in Godot, hand-made pixel art, and the interfaces around them.">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f4efe4">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Jusnie — games and interfaces, drawn pixel by pixel">
+<meta property="og:title" content="Jusnie — games, one pixel at a time">
 <meta property="og:description" content="Small games in Godot, hand-made pixel art, and the interfaces around them. Quezon City.">
-<meta property="og:image" content="assets/img/meadowlight.png">
+<meta property="og:image" content="assets/img/keyart.png">
 <link rel="icon" href="assets/svg/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/paperboy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,7 +27,7 @@
 
     <nav class="nav__links" aria-label="Sections">
       <a href="#work">Work</a>
-      <a href="#tools">Tools</a>
+      <a href="#art">Art</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -42,7 +43,7 @@
   <div class="nav__menu" id="nav-menu" hidden>
     <div class="wrap">
       <a href="#work">Work</a>
-      <a href="#tools">Tools</a>
+      <a href="#art">Art</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="mailto:hello@jusnie.dev">hello@jusnie.dev</a>
@@ -54,8 +55,6 @@
   <style>
     .nav__links { display: flex; flex-wrap: wrap; margin: 0; padding: 8px 0 14px; }
     .nav__toggle { display: none !important; }
-    .screen__overlay .btn,
-    .hud__btn { display: none; }
   </style>
 </noscript>
 
@@ -67,7 +66,7 @@
         <p class="hero__sub">Independent game developer and pixel artist in Quezon City. Small games in Godot and the screens around them, with hand-made art and a stubborn amount of measuring.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#work">See the work <span aria-hidden="true">→</span></a>
-          <button class="btn" type="button" data-start>Play the demo <span aria-hidden="true">▸</span></button>
+          <a class="btn" href="#art">The sprite sheet</a>
         </div>
         <dl class="hero__facts">
           <div>
@@ -85,27 +84,19 @@
         </dl>
       </div>
 
-      <figure class="cabinet" id="cabinet">
-        <div class="cabinet__bezel">
-          <div class="screen">
-            <canvas id="game" width="192" height="120" tabindex="0" role="img"
-              aria-label="Paddle: a small brick-breaking game drawn in 192 by 120 pixels. Use the left and right arrow keys to move the paddle and the space bar to serve."
-              aria-describedby="game-help"></canvas>
-            <div class="screen__overlay" data-overlay>
-              <p class="overlay__kicker">A live sketch, 192 × 120</p>
-              <p class="overlay__title">Paddle</p>
-              <button class="btn btn--primary btn--small" type="button" data-play>Press start</button>
-            </div>
+      <figure class="hero__art">
+        <div class="frame">
+          <picture>
+            <source srcset="assets/img/keyart.webp" type="image/webp">
+            <img src="assets/img/keyart.png" width="384" height="216" fetchpriority="high" decoding="async" alt="Key art at night: terraced vegetable plots and a lit farmhouse under a full moon, a lantern glowing on the path, a sheep asleep by the fence">
+          </picture>
+          <div class="frame__bar">
+            <span class="frame__name">Meadowlight</span>
+            <span>Godot 4</span>
+            <span class="frame__state">In development</span>
           </div>
-          <div class="hud">
-            <span class="hud__cell">Score <b data-score>0000</b></span>
-            <span class="hud__cell">Lives <b data-lives>3</b></span>
-            <button class="hud__cell hud__btn" type="button" data-pause hidden>Pause</button>
-            <span class="hud__hint" id="game-help">← → move · space serves</span>
-          </div>
-          <p class="sr-only" role="status" aria-live="polite" data-status></p>
         </div>
-        <figcaption class="cabinet__caption">Drawn on a canvas in this page. Not a video, not a gif.</figcaption>
+        <figcaption>Key art, drawn at 384 × 216 and scaled up as pixels, not filters.</figcaption>
       </figure>
     </div>
   </section>
@@ -134,7 +125,7 @@
               <li>GDScript</li>
               <li>Aseprite</li>
             </ul>
-            <p class="card__foot">Winter build playable · case study on request</p>
+            <p class="card__foot">Winter build playable · <a href="mailto:hello@jusnie.dev?subject=Meadowlight%20case%20study">Ask for the case study</a></p>
           </div>
         </article>
 
@@ -154,7 +145,7 @@
               <li>GLSL</li>
               <li>FMOD</li>
             </ul>
-            <p class="card__foot">Jam build · case study on request</p>
+            <p class="card__foot">Jam build · <a href="mailto:hello@jusnie.dev?subject=Signal%20Deep%20case%20study">Ask for the case study</a></p>
           </div>
         </article>
 
@@ -193,7 +184,7 @@
               <li>TypeScript</li>
               <li>Figma</li>
             </ul>
-            <p class="card__foot">MIT · 32 components · case study on request</p>
+            <p class="card__foot">MIT · 32 components · <a href="mailto:hello@jusnie.dev?subject=Lantern%20case%20study">Ask for the case study</a></p>
           </div>
         </article>
 
@@ -212,14 +203,52 @@
               <li>Astro</li>
               <li>Markdown</li>
             </ul>
-            <p class="card__foot">42 posts · case study on request</p>
+            <p class="card__foot">42 posts · <a href="mailto:hello@jusnie.dev?subject=Field%20Notes">Ask where to start reading</a></p>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section section--band" id="tools">
+  <section class="section section--band" id="art">
+    <div class="wrap">
+      <header class="section__head">
+        <h2 class="section__title">Drawn at 16 × 16</h2>
+        <p class="section__note">Six of the cast, one palette</p>
+      </header>
+
+      <ul class="sprite-set">
+        <li>
+          <img src="assets/svg/sprite-farmer.svg" alt="Sprite of a farmer in a straw hat and green overalls" width="64" height="64" loading="lazy">
+          <span>Farmer</span>
+        </li>
+        <li>
+          <img src="assets/svg/sprite-sheep.svg" alt="Sprite of a sheep in cream wool with dark legs" width="64" height="64" loading="lazy">
+          <span>Sheep</span>
+        </li>
+        <li>
+          <img src="assets/svg/sprite-crow.svg" alt="Sprite of a grey crow with a gold beak" width="64" height="64" loading="lazy">
+          <span>Crow</span>
+        </li>
+        <li>
+          <img src="assets/svg/sprite-wateringcan.svg" alt="Sprite of a slate watering can" width="64" height="64" loading="lazy">
+          <span>Watering can</span>
+        </li>
+        <li>
+          <img src="assets/svg/sprite-turnip.svg" alt="Sprite of a turnip with a pale root and green leaves" width="64" height="64" loading="lazy">
+          <span>Turnip</span>
+        </li>
+        <li>
+          <img src="assets/svg/sprite-pine.svg" alt="Sprite of a pine tree on a short trunk" width="64" height="64" loading="lazy">
+          <span>Pine</span>
+        </li>
+      </ul>
+
+      <p class="sprite-lede">Every sprite starts as a 16 × 16 grid, drawn on the same 35 colours as the scenes above, so a sheep and a hillside belong to the same evening.</p>
+    </div>
+  </section>
+
+  <section class="section" id="tools">
     <div class="wrap tools">
       <div class="tools__intro">
         <h2 class="section__title">What I work with</h2>
@@ -281,7 +310,7 @@
 
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p class="footer__colophon">Art is generated, then reduced to a 35-colour palette with ImageMagick. The cabinet, the mark, the lettering and this layout are drawn in code.</p>
+    <p class="footer__colophon">Scenes are generated, then reduced to a 35-colour palette with ImageMagick. The sprites, the display face and this layout are drawn in code.</p>
     <p class="footer__meta">© 2026 Jusnie · Quezon City · <a href="#top">Back to top</a></p>
   </div>
 </footer>

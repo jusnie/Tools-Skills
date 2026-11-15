@@ -5,9 +5,10 @@ and for the things they build.
 
 ## Site
 
-[`portfolio/`](portfolio) — a one-page portfolio in paper, ink and pixel art.
-Static HTML, CSS and one script, with a small playable game on a 192 × 120
-canvas. Run it with `python3 -m http.server 8000 --directory portfolio`.
+[`portfolio/`](portfolio) — a one-page game portfolio in paper, ink and pixel art:
+key art in a framed sleeve, four projects, a six-sprite sheet drawn at 16 × 16,
+and an authored display face. Static HTML, CSS and one small script. Run it with
+`python3 -m http.server 8000 --directory portfolio`.
 
 ## Skills
 
