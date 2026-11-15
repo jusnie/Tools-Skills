@@ -42,6 +42,24 @@ typography and heights are adjusted with media queries appended to each componen
 
 Desktop (≥1100 px wide) is untouched — the same pixels as the original repo.
 
+**Background video on phones** — a 16:9 clip inside a 9:19.5 phone can only be `cover`-cropped
+to a ~25% slice, which is why the artwork looked like a zoomed-in fragment. `src/BgVideo.jsx` now
+renders, on portrait screens only:
+
+- a blurred, darkened copy of the same video filling the screen, and
+- the clip itself as a full-frame-width band (`object-fit: cover` at `--bg-band-zoom`, default
+  `130%`), so the actual scene is visible instead of a sliver.
+
+Landscape, tablet-landscape and desktop keep the original single full-bleed `cover` video, pixel for
+pixel. Tune the framing with one number in `src/App.css`:
+
+```css
+#menu-screen { --bg-band-zoom: 130%; }   /* 100% = whole frame, larger = tighter crop */
+```
+
+`BgVideo` also retries playback on tap/scroll, because in-app browsers and preview iframes block
+native autoplay and leave the clip frozen on its first frame.
+
 **`src/ComingSoon.jsx`** — the menu links to `/github` and `/sideproj`, which the source repo never
 built. They used to render a blank page; a catch-all route now sends them to a P3-styled notice.
 
