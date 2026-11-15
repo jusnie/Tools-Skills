@@ -1,6 +1,6 @@
 /* ============================================================
    Jusnie — portfolio scripts
-   1. mobile menu   2. copy email   3. Paddle, the cabinet game
+   1. mobile menu   2. nav spy   3. copy email   4. Paddle, the cabinet game
    ============================================================ */
 
 (() => {
@@ -37,7 +37,35 @@
     });
   }
 
-  /* ---------------- 2. copy email ---------------- */
+  /* ---------------- 2. current section in the nav ---------------- */
+
+  const sectionLinks = [...document.querySelectorAll('.nav__links a[href^="#"]')];
+
+  if (sectionLinks.length && 'IntersectionObserver' in window) {
+    const mark = (id) => {
+      sectionLinks.forEach((link) => {
+        if (link.getAttribute('href') === `#${id}`) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting || !entry.target || !entry.target.id) continue;
+          mark(entry.target.id);
+        }
+      },
+      { rootMargin: '-30% 0px -55% 0px' }
+    );
+
+    for (const link of sectionLinks) {
+      const section = document.querySelector(link.getAttribute('href'));
+      if (section) spy.observe(section);
+    }
+  }
+
+  /* ---------------- 3. copy email ---------------- */
 
   const copyButton = document.querySelector('[data-copy]');
 
@@ -57,7 +85,7 @@
     });
   }
 
-  /* ---------------- 3. Paddle ---------------- */
+  /* ---------------- 4. Paddle ---------------- */
 
   const canvas = document.getElementById('game');
 

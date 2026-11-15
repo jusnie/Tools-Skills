@@ -11,9 +11,14 @@ canvas. Run it with `python3 -m http.server 8000 --directory portfolio`.
 
 ## Skills
 
-| Skill | What it does | Source |
-| --- | --- | --- |
-| [`unslop`](skills/unslop/SKILL.md) | Turns vibecoded, AI-looking UI into a designed interface with its own character: audits the slop, picks a direction, then fixes spacing, color, icons, copy, type, layout, details, visuals and motion in that order. | [heydamir/unslop](https://github.com/heydamir/unslop) |
+| Skill | What it does | License | Source |
+| --- | --- | --- | --- |
+| [`unslop`](skills/unslop/SKILL.md) | Finds the AI-looking UI tells, sets a direction from the product, then fixes spacing, color, icons, copy, type, layout, details, visuals and motion in that order. | CC BY 4.0 | [heydamir/unslop](https://github.com/heydamir/unslop) |
+| [`impeccable`](skills/impeccable/SKILL.md) | A design director's vocabulary: 24 commands (shape, critique, audit, polish, bolder, quieter, distill, animate, document…), a craft floor with absolute bans, and 45 references. | Apache 2.0 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
+| [`ui-ux-pro-max`](skills/ui-ux-pro-max/SKILL.md) | Searchable local design intelligence: 80 styles, 192 product palettes, 74 font pairings, 120 UX rules, 25 chart types, 22 stacks. Runs offline with Python. | MIT | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) |
+| [`taste`](skills/taste/SKILL.md) | Reverse-engineers a site's design DNA into tokens plus the trigger → decision → reason behind them. Needs the Playwright MCP server to capture a page. | MIT (per README) | [senlindesign/taste-skill](https://github.com/senlindesign/taste-skill) |
+
+Attribution, licences and any changes are in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 ## Install
 

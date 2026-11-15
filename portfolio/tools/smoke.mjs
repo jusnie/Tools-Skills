@@ -49,8 +49,8 @@ window.eval(readFileSync(`${root}/main.js`, 'utf8'));
 const problems = [];
 const $ = (sel) => doc.querySelector(sel);
 
-const assets = [...doc.querySelectorAll('img[src], link[href]')]
-  .map((el) => el.getAttribute('src') || el.getAttribute('href'))
+const assets = [...doc.querySelectorAll('img[src], link[href], source[srcset]')]
+  .map((el) => el.getAttribute('src') || el.getAttribute('href') || el.getAttribute('srcset'))
   .filter((p) => p && !p.startsWith('http') && !p.startsWith('#'))
   .map((p) => resolve(root, p));
 for (const file of assets) {

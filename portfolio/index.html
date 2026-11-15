@@ -21,7 +21,7 @@
   <div class="wrap nav__inner">
     <a class="brand" href="#top" aria-label="Jusnie, back to top">
       <img class="brand__mark" src="assets/svg/mark.svg" alt="" width="32" height="32">
-      <img class="brand__word" src="assets/svg/wordmark.svg" alt="Jusnie" width="108" height="24">
+      <span class="brand__word">Jusnie</span>
     </a>
 
     <nav class="nav__links" aria-label="Sections">
@@ -63,9 +63,8 @@
   <section class="hero" id="top">
     <div class="wrap hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">Game developer and pixel artist, Quezon City</p>
-        <h1 class="hero__title">Games and interfaces, drawn one <em>pixel</em> at a time</h1>
-        <p class="hero__sub">Small games in Godot and the screens around them: hand-made pixel art, TypeScript, and a stubborn amount of measuring.</p>
+        <h1 class="hero__title">Games, one <em>pixel</em> at a time</h1>
+        <p class="hero__sub">Independent game developer and pixel artist in Quezon City. Small games in Godot and the screens around them, with hand-made art and a stubborn amount of measuring.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#work">See the work <span aria-hidden="true">→</span></a>
           <button class="btn" type="button" data-start>Play the demo <span aria-hidden="true">▸</span></button>
@@ -114,7 +113,6 @@
   <section class="section" id="work">
     <div class="wrap">
       <header class="section__head">
-        <p class="eyebrow">01 — Work</p>
         <h2 class="section__title">Selected work</h2>
         <p class="section__note">Four projects, 2022 — 2026</p>
       </header>
@@ -122,7 +120,10 @@
       <div class="work">
         <article class="card card--wide">
           <figure class="card__shot">
-            <img src="assets/img/meadowlight.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of terraced farm plots, a timber farmhouse and two sheep on a green hillside at dusk">
+            <picture>
+              <source srcset="assets/img/meadowlight.webp" type="image/webp">
+              <img src="assets/img/meadowlight.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of terraced farm plots, a timber farmhouse and two sheep on a green hillside at dusk">
+            </picture>
           </figure>
           <div class="card__body">
             <p class="card__meta">2024 — now · Game · In development</p>
@@ -139,7 +140,10 @@
 
         <article class="card">
           <figure class="card__shot">
-            <img src="assets/img/signaldeep.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of a small drone submarine with a lamp beam beside a sunken radio tower in dark water">
+            <picture>
+              <source srcset="assets/img/signaldeep.webp" type="image/webp">
+              <img src="assets/img/signaldeep.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of a small drone submarine with a lamp beam beside a sunken radio tower in dark water">
+            </picture>
           </figure>
           <div class="card__body">
             <p class="card__meta">2023 · Game · Released</p>
@@ -195,7 +199,10 @@
 
         <article class="card card--wide">
           <figure class="card__shot">
-            <img src="assets/img/fieldnotes.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of an open notebook, a mechanical keyboard and a mug on a wooden desk by a window with autumn trees">
+            <picture>
+              <source srcset="assets/img/fieldnotes.webp" type="image/webp">
+              <img src="assets/img/fieldnotes.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of an open notebook, a mechanical keyboard and a mug on a wooden desk by a window with autumn trees">
+            </picture>
           </figure>
           <div class="card__body">
             <p class="card__meta">2022 — now · Writing</p>
@@ -215,7 +222,6 @@
   <section class="section section--band" id="tools">
     <div class="wrap tools">
       <div class="tools__intro">
-        <p class="eyebrow">02 — Tools</p>
         <h2 class="section__title">What I work with</h2>
         <p class="tools__lede">Nine years of shipping small things, mostly alone. The stack stays narrow so the hours go into the game.</p>
         <p class="tools__now"><span class="marker" aria-hidden="true"></span>Currently learning: shaders in GLSL, and how to stop rewriting the save system</p>
@@ -237,7 +243,6 @@
   <section class="section" id="about">
     <div class="wrap about">
       <div class="about__text">
-        <p class="eyebrow">03 — About</p>
         <h2 class="section__title">One person, one desk, one lamp</h2>
         <p>I'm Jusnie. I started drawing pixel art on a borrowed copy of Aseprite in 2017, and building the systems underneath it shortly after, because the art needed something to move in.</p>
         <p>These days that means one game at a time, made in the open, with the tools written down. I work from Quezon City, usually from 9pm, usually with the lamp on.</p>
@@ -248,7 +253,10 @@
         </ul>
       </div>
       <figure class="about__figure">
-        <img src="assets/img/portrait.png" width="176" height="96" loading="lazy" decoding="async" alt="Pixel art of a developer with a beard at a desk, lit by one lamp, with a small game running on a CRT monitor">
+        <picture>
+          <source srcset="assets/img/portrait.webp" type="image/webp">
+          <img src="assets/img/portrait.png" width="176" height="96" loading="lazy" decoding="async" alt="Pixel art of a developer with a beard at a desk, lit by one lamp, with a small game running on a CRT monitor">
+        </picture>
         <figcaption>The desk, roughly. Quezon City, 2026.</figcaption>
       </figure>
     </div>
@@ -256,8 +264,7 @@
 
   <section class="section section--contact" id="contact">
     <div class="wrap contact">
-      <p class="eyebrow">04 — Contact</p>
-      <img class="contact__mark" src="assets/svg/lets-talk.svg" alt="Let's talk" width="240" height="32">
+      <h2 class="contact__title">Let's talk</h2>
       <p class="contact__lede">A game, a menu system, or a site like this one. I answer within two days, and I'll say no quickly if it isn't a fit.</p>
       <div class="contact__row">
         <a class="contact__mail" href="mailto:hello@jusnie.dev">hello@jusnie.dev</a>

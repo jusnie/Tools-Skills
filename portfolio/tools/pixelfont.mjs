@@ -6,7 +6,8 @@
  * handful of <path> subpaths instead of hundreds of <rect>s. Every glyph sits on
  * the same grid, so the result is crisp at any integer scale.
  *
- *   node tools/pixelfont.mjs "JUSNIE" --out assets/svg/wordmark.svg --scale 3 --shadow "#b4441f"
+ *   node tools/pixelfont.mjs "PRESS START" --out /tmp/press.svg --scale 3 --shadow "#b4441f"
+ *   node tools/pixelfont.mjs --dump-glyphs > /tmp/glyphs.json   (feeds build-font.py)
  */
 
 import { writeFileSync, mkdirSync } from 'node:fs';
@@ -157,6 +158,11 @@ function args(argv) {
 }
 
 const cli = args(process.argv.slice(2));
+if (cli['dump-glyphs']) {
+  process.stdout.write(`${JSON.stringify({ glyphs: GLYPHS, glyphW: GLYPH_W, glyphH: GLYPH_H }, null, 0)}\n`);
+  process.exit(0);
+}
+
 if (cli.help || (!cli._.length && !cli.sprite && !cli.art)) {
   process.stdout.write(
     'usage: pixelfont.mjs "TEXT" --out file.svg [--scale 3] [--color #16181f] [--shadow #b4441f] [--tracking 1] [--label "alt"]\n'

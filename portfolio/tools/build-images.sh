@@ -29,15 +29,13 @@ convert "$src" \
 printf '%s\n' "assets/img/${name}.png"
 identify "assets/img/${name}.png"
 
-# The lettering and the sprite mark come from the same 5x7 face:
+# The sprite mark and the display font come from the same 5x7 face:
 #
-#   node tools/pixelfont.mjs "JUSNIE" --out assets/svg/wordmark.svg \
-#     --scale 3 --color "#16181f" --shadow "#c2532a"
-#   node tools/pixelfont.mjs "LET'S TALK" --out assets/svg/lets-talk.svg \
-#     --scale 4 --color "#16181f" --shadow "#c2532a"
 #   node tools/pixelfont.mjs --sprite tools/avatar.sprite.json \
 #     --out assets/svg/mark.svg --scale 2
+#   node tools/pixelfont.mjs --dump-glyphs > /tmp/glyphs.json
+#   python3 tools/build-font.py /tmp/glyphs.json assets/fonts
 #
-# Preview any of them without a browser:
+# Preview either without a browser:
 #
 #   python3 tools/preview.py assets/svg/mark.svg /tmp/mark.png 8

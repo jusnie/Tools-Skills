@@ -1,7 +1,20 @@
 /* ============================================================
    Jusnie — portfolio
    Paper, ink, ember. 2px rules, hard offset shadows, no radius.
+
+   Display type is Paperboy, a 5x7 bitmap face compiled to TTF and WOFF2
+   by tools/build-font.py (1.4KB). Sizes are multiples of 10 so every font
+   pixel is a whole CSS pixel: 40px is 4px per pixel, 30px is 3px.
    ============================================================ */
+
+@font-face {
+  font-family: "Paperboy";
+  src: url("assets/fonts/paperboy.woff2") format("woff2"),
+    url("assets/fonts/paperboy.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --paper: #f4efe4;
@@ -17,6 +30,7 @@
   --slate: #616a77;
   --hair: rgba(22, 24, 31, 0.14);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --display: "Paperboy", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --wrap: 1160px;
@@ -74,6 +88,30 @@ h3 {
   outline-offset: 3px;
 }
 
+::selection {
+  background: var(--ember);
+  color: var(--paper-hi);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) var(--paper-lo);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--paper-lo);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border: 2px solid var(--paper-lo);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -114,26 +152,6 @@ h3 {
 
 /* ---------- type helpers ---------- */
 
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--muted);
-}
-
-.eyebrow::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  flex: none;
-  background: var(--ember);
-  box-shadow: 2px 2px 0 var(--ink);
-}
 
 .marker {
   width: 8px;
@@ -232,8 +250,13 @@ h3 {
 }
 
 .brand__word {
-  width: 108px;
-  height: 24px;
+  font-family: var(--display);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--ink);
+  text-shadow: 3px 3px 0 var(--ember);
+  padding-right: 3px;
 }
 
 .nav__links {
@@ -258,6 +281,11 @@ h3 {
 .nav__links a:hover,
 .nav__menu a:hover {
   color: var(--ember);
+  border-bottom-color: var(--ember);
+}
+
+.nav__links a[aria-current="true"] {
+  color: var(--ink);
   border-bottom-color: var(--ember);
 }
 
@@ -331,11 +359,12 @@ h3 {
 }
 
 .hero__title {
-  margin-top: 20px;
-  font-size: clamp(34px, 4.4vw, 56px);
-  line-height: 1.04;
-  letter-spacing: -0.028em;
-  max-width: 19ch;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.16;
+  letter-spacing: 0.005em;
+  max-width: 18ch;
 }
 
 .hero__title em {
@@ -344,8 +373,8 @@ h3 {
 }
 
 .hero__sub {
-  margin-top: 20px;
-  max-width: 44ch;
+  margin-top: 24px;
+  max-width: 54ch;
   font-size: 17.5px;
   line-height: 1.55;
   color: var(--ink-2);
@@ -512,21 +541,19 @@ h3 {
   margin-bottom: 40px;
 }
 
-.section__head .eyebrow {
-  grid-column: 1 / -1;
-}
-
 .section__title {
-  font-size: clamp(28px, 3.2vw, 40px);
-  line-height: 1.12;
-  letter-spacing: -0.024em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.14;
+  letter-spacing: 0;
 }
 
 .section__note {
   font-family: var(--mono);
   font-size: 12px;
   color: var(--muted);
-  padding-bottom: 4px;
+  padding-bottom: 6px;
 }
 
 /* ---------- work ---------- */
@@ -587,16 +614,18 @@ h3 {
 }
 
 .card__title {
-  font-size: 22px;
-  line-height: 1.2;
-  letter-spacing: -0.014em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: 0;
 }
 
 .card__text {
   font-size: 14.5px;
   line-height: 1.55;
   color: var(--ink-2);
-  max-width: 48ch;
+  max-width: 56ch;
 }
 
 .tags {
@@ -767,7 +796,7 @@ h3 {
 
 .tools__lede {
   margin-top: 20px;
-  max-width: 40ch;
+  max-width: 60ch;
   font-size: 16px;
   line-height: 1.6;
   color: var(--ink-2);
@@ -851,7 +880,7 @@ h3 {
 
 .about__text p {
   margin-top: 16px;
-  max-width: 54ch;
+  max-width: 68ch;
   font-size: 16px;
   line-height: 1.65;
   color: var(--ink-2);
@@ -917,11 +946,13 @@ h3 {
   gap: 18px;
 }
 
-.contact__mark {
-  width: 240px;
-  max-width: 100%;
-  height: auto;
-  margin-block: 6px 2px;
+.contact__title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.14;
+  letter-spacing: 0;
+  margin-block: 4px 0;
 }
 
 .contact__lede {
@@ -1112,6 +1143,15 @@ h3 {
     padding-inline: 20px;
   }
 
+  .hero__title,
+  .section__title {
+    font-size: 30px;
+  }
+
+  .brand__word {
+    font-size: 20px;
+  }
+
   .hero__facts {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -1155,8 +1195,8 @@ h3 {
     font-size: 12.5px;
   }
 
-  .contact__mark {
-    width: 100%;
+  .contact__title {
+    font-size: 30px;
   }
 }
 
