@@ -1,0 +1,31 @@
+{
+  "art": [
+    ".....hhhhhh.....",
+    "...hhhhhhhhhh...",
+    "..hhhhhhhhhhhh..",
+    ".hhhhhhhhhhhhhh.",
+    ".hhsssssssssshh.",
+    ".hssssssssssssh.",
+    ".hseesssssseesh.",
+    ".hseesssssseesh.",
+    ".hssssssssssssh.",
+    ".hssbbbbbbbbssh.",
+    ".hsbbbbbbbbbbsh.",
+    ".hssBbbbbbbBssh.",
+    "....bBBBBBBb....",
+    "..tttttttttttt..",
+    ".tttttttttttttt.",
+    "..tmmttttttmmt.."
+  ],
+  "key": {
+    "h": "#31353f",
+    "s": "#e8c39a",
+    "d": "#c98b57",
+    "e": "#16181f",
+    "b": "#c2532a",
+    "B": "#8f2f16",
+    "t": "#356049",
+    "m": "#264a38"
+  },
+  "scale": 1
+}

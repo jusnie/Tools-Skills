@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jusnie — games and interfaces, drawn pixel by pixel</title>
+<meta name="description" content="Portfolio of Jusnie, an independent game developer in Quezon City: small games in Godot, hand-made pixel art, and the interfaces around them.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f4efe4">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jusnie — games and interfaces, drawn pixel by pixel">
+<meta property="og:description" content="Small games in Godot, hand-made pixel art, and the interfaces around them. Quezon City.">
+<meta property="og:image" content="assets/img/meadowlight.png">
+<link rel="icon" href="assets/svg/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="#top" aria-label="Jusnie, back to top">
+      <img class="brand__mark" src="assets/svg/mark.svg" alt="" width="32" height="32">
+      <img class="brand__word" src="assets/svg/wordmark.svg" alt="Jusnie" width="108" height="24">
+    </a>
+
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#tools">Tools</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <a class="btn btn--small nav__mail" href="mailto:hello@jusnie.dev">Email</a>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+      <span class="nav__toggle-bars" aria-hidden="true"></span>
+      Menu
+    </button>
+  </div>
+
+  <div class="nav__menu" id="nav-menu" hidden>
+    <div class="wrap">
+      <a href="#work">Work</a>
+      <a href="#tools">Tools</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="mailto:hello@jusnie.dev">hello@jusnie.dev</a>
+    </div>
+  </div>
+</header>
+
+<noscript>
+  <style>
+    .nav__links { display: flex; flex-wrap: wrap; margin: 0; padding: 8px 0 14px; }
+    .nav__toggle { display: none !important; }
+    .screen__overlay .btn,
+    .hud__btn { display: none; }
+  </style>
+</noscript>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">Game developer and pixel artist, Quezon City</p>
+        <h1 class="hero__title">Games and interfaces, drawn one <em>pixel</em> at a time</h1>
+        <p class="hero__sub">Small games in Godot and the screens around them: hand-made pixel art, TypeScript, and a stubborn amount of measuring.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#work">See the work <span aria-hidden="true">→</span></a>
+          <button class="btn" type="button" data-start>Play the demo <span aria-hidden="true">▸</span></button>
+        </div>
+        <dl class="hero__facts">
+          <div>
+            <dt>Toolset</dt>
+            <dd>Godot 4, TypeScript, Aseprite</dd>
+          </div>
+          <div>
+            <dt>Building</dt>
+            <dd>Meadowlight, winter build</dd>
+          </div>
+          <div>
+            <dt>Booking</dt>
+            <dd>Freelance from March 2027</dd>
+          </div>
+        </dl>
+      </div>
+
+      <figure class="cabinet" id="cabinet">
+        <div class="cabinet__bezel">
+          <div class="screen">
+            <canvas id="game" width="192" height="120" tabindex="0" role="img"
+              aria-label="Paddle: a small brick-breaking game drawn in 192 by 120 pixels. Use the left and right arrow keys to move the paddle and the space bar to serve."
+              aria-describedby="game-help"></canvas>
+            <div class="screen__overlay" data-overlay>
+              <p class="overlay__kicker">A live sketch, 192 × 120</p>
+              <p class="overlay__title">Paddle</p>
+              <button class="btn btn--primary btn--small" type="button" data-play>Press start</button>
+            </div>
+          </div>
+          <div class="hud">
+            <span class="hud__cell">Score <b data-score>0000</b></span>
+            <span class="hud__cell">Lives <b data-lives>3</b></span>
+            <button class="hud__cell hud__btn" type="button" data-pause hidden>Pause</button>
+            <span class="hud__hint" id="game-help">← → move · space serves</span>
+          </div>
+          <p class="sr-only" role="status" aria-live="polite" data-status></p>
+        </div>
+        <figcaption class="cabinet__caption">Drawn on a canvas in this page. Not a video, not a gif.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">01 — Work</p>
+        <h2 class="section__title">Selected work</h2>
+        <p class="section__note">Four projects, 2022 — 2026</p>
+      </header>
+
+      <div class="work">
+        <article class="card card--wide">
+          <figure class="card__shot">
+            <img src="assets/img/meadowlight.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of terraced farm plots, a timber farmhouse and two sheep on a green hillside at dusk">
+          </figure>
+          <div class="card__body">
+            <p class="card__meta">2024 — now · Game · In development</p>
+            <h3 class="card__title">Meadowlight</h3>
+            <p class="card__text">A farming game about light. Crops only grow where the sun reaches, so you cut terraces into a hillside and learn how the shadows fall through the year.</p>
+            <ul class="tags">
+              <li>Godot 4</li>
+              <li>GDScript</li>
+              <li>Aseprite</li>
+            </ul>
+            <p class="card__foot">Winter build playable · case study on request</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="card__shot">
+            <img src="assets/img/signaldeep.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of a small drone submarine with a lamp beam beside a sunken radio tower in dark water">
+          </figure>
+          <div class="card__body">
+            <p class="card__meta">2023 · Game · Released</p>
+            <h3 class="card__title">Signal Deep</h3>
+            <p class="card__text">A 48-hour jam build about a drone that answers a signal from a sunken tower. One lamp, one battery, thirty minutes of air.</p>
+            <ul class="tags">
+              <li>Godot 4</li>
+              <li>GLSL</li>
+              <li>FMOD</li>
+            </ul>
+            <p class="card__foot">Jam build · case study on request</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <figure class="card__mock" aria-hidden="true">
+            <div class="mock__bar">
+              <span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span>
+              <span class="mock__filen">lantern · settings</span>
+            </div>
+            <div class="mock__panel">
+              <p class="mock__title">Options</p>
+              <div class="mock__row">
+                <span>Master volume</span>
+                <span class="mock__slider"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="mock__row mock__row--sel">
+                <span>Screen shake</span>
+                <span class="mock__toggle"><b></b></span>
+              </div>
+              <div class="mock__row">
+                <span>Pixel snap</span>
+                <span class="mock__toggle mock__toggle--on"><b></b></span>
+              </div>
+              <div class="mock__foot">
+                <span class="mock__key">Enter</span> apply
+                <span class="mock__key">Esc</span> back
+              </div>
+            </div>
+          </figure>
+          <div class="card__body">
+            <p class="card__meta">2025 · Product · Open source</p>
+            <h3 class="card__title">Lantern</h3>
+            <p class="card__text">A menu and HUD kit for Godot games. Thirty-two components on a 4px grid, so a settings screen stops being the last thing anyone designs.</p>
+            <ul class="tags">
+              <li>Godot 4</li>
+              <li>TypeScript</li>
+              <li>Figma</li>
+            </ul>
+            <p class="card__foot">MIT · 32 components · case study on request</p>
+          </div>
+        </article>
+
+        <article class="card card--wide">
+          <figure class="card__shot">
+            <img src="assets/img/fieldnotes.png" width="352" height="196" loading="lazy" decoding="async" alt="Pixel art of an open notebook, a mechanical keyboard and a mug on a wooden desk by a window with autumn trees">
+          </figure>
+          <div class="card__body">
+            <p class="card__meta">2022 — now · Writing</p>
+            <h3 class="card__title">Field Notes</h3>
+            <p class="card__text">A devlog about building small things slowly: post-mortems, tile maps, and the parts of game feel that never fit in a post.</p>
+            <ul class="tags">
+              <li>Astro</li>
+              <li>Markdown</li>
+            </ul>
+            <p class="card__foot">42 posts · case study on request</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band" id="tools">
+    <div class="wrap tools">
+      <div class="tools__intro">
+        <p class="eyebrow">02 — Tools</p>
+        <h2 class="section__title">What I work with</h2>
+        <p class="tools__lede">Nine years of shipping small things, mostly alone. The stack stays narrow so the hours go into the game.</p>
+        <p class="tools__now"><span class="marker" aria-hidden="true"></span>Currently learning: shaders in GLSL, and how to stop rewriting the save system</p>
+      </div>
+
+      <div class="sheet">
+        <div class="sheet__row sheet__row--head" aria-hidden="true">
+          <span>Discipline</span><span>Tools</span><span class="sheet__num">Years</span>
+        </div>
+        <div class="sheet__row"><span class="sheet__name">Game systems</span><span class="sheet__tools">Godot 4, GDScript, TypeScript</span><span class="sheet__num">9</span></div>
+        <div class="sheet__row"><span class="sheet__name">Pixel art</span><span class="sheet__tools">Aseprite, hand-built tilesets, animation</span><span class="sheet__num">9</span></div>
+        <div class="sheet__row"><span class="sheet__name">Interfaces</span><span class="sheet__tools">TypeScript, CSS, Vite, Astro</span><span class="sheet__num">6</span></div>
+        <div class="sheet__row"><span class="sheet__name">Pipelines</span><span class="sheet__tools">Node, ImageMagick, GitHub Actions</span><span class="sheet__num">5</span></div>
+        <div class="sheet__row"><span class="sheet__name">Sound</span><span class="sheet__tools">FMOD, Audacity, a bad microphone</span><span class="sheet__num">3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap about">
+      <div class="about__text">
+        <p class="eyebrow">03 — About</p>
+        <h2 class="section__title">One person, one desk, one lamp</h2>
+        <p>I'm Jusnie. I started drawing pixel art on a borrowed copy of Aseprite in 2017, and building the systems underneath it shortly after, because the art needed something to move in.</p>
+        <p>These days that means one game at a time, made in the open, with the tools written down. I work from Quezon City, usually from 9pm, usually with the lamp on.</p>
+        <ul class="now">
+          <li><span>Building</span> Meadowlight, the winter build</li>
+          <li><span>Reading</span> Playing to Win, David Sirlin</li>
+          <li><span>Setup</span> Godot 4.4, Aseprite, a 2016 keyboard</li>
+        </ul>
+      </div>
+      <figure class="about__figure">
+        <img src="assets/img/portrait.png" width="176" height="96" loading="lazy" decoding="async" alt="Pixel art of a developer with a beard at a desk, lit by one lamp, with a small game running on a CRT monitor">
+        <figcaption>The desk, roughly. Quezon City, 2026.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--contact" id="contact">
+    <div class="wrap contact">
+      <p class="eyebrow">04 — Contact</p>
+      <img class="contact__mark" src="assets/svg/lets-talk.svg" alt="Let's talk" width="240" height="32">
+      <p class="contact__lede">A game, a menu system, or a site like this one. I answer within two days, and I'll say no quickly if it isn't a fit.</p>
+      <div class="contact__row">
+        <a class="contact__mail" href="mailto:hello@jusnie.dev">hello@jusnie.dev</a>
+        <button class="btn btn--small" type="button" data-copy="hello@jusnie.dev">Copy</button>
+      </div>
+      <ul class="contact__links">
+        <li><a href="https://github.com/jusnie">GitHub</a></li>
+        <li><a href="https://x.com/jusnie">X</a></li>
+        <li><a href="https://jusnie.itch.io">itch.io</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p class="footer__colophon">Art is generated, then reduced to a 35-colour palette with ImageMagick. The cabinet, the mark, the lettering and this layout are drawn in code.</p>
+    <p class="footer__meta">© 2026 Jusnie · Quezon City · <a href="#top">Back to top</a></p>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

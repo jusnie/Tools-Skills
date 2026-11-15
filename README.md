@@ -1,6 +1,15 @@
 # Tools-Skills
 
-A home for agent skills, usable with Claude Code, Codex and Google Antigravity.
+A home for agent skills, usable with Claude Code, Codex and Google Antigravity,
+and for the things they build.
+
+## Site
+
+[`portfolio/`](portfolio) — a one-page portfolio in paper, ink and pixel art.
+Static HTML, CSS and one script, with a small playable game on a 192 × 120
+canvas. Run it with `python3 -m http.server 8000 --directory portfolio`.
+
+## Skills
 
 | Skill | What it does | Source |
 | --- | --- | --- |
