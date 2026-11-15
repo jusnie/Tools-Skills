@@ -1,0 +1,12 @@
+{
+  "name": "tools-skills",
+  "description": "A collection of agent skills, installable as a Claude Code plugin",
+  "owner": { "name": "jusnie" },
+  "plugins": [
+    {
+      "name": "tools-skills",
+      "source": "./",
+      "description": "Skills collected in jusnie/Tools-Skills, including unslop for turning vibecoded UI into a designed interface"
+    }
+  ]
+}
