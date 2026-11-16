@@ -131,9 +131,15 @@
   const menu = document.getElementById('nav-menu');
 
   if (menuToggle && menu) {
+    const focusable = () => [...menu.querySelectorAll('a[href], button:not([disabled])')];
+
     const setOpen = (open) => {
       menuToggle.setAttribute('aria-expanded', String(open));
       menu.hidden = !open;
+      if (open) {
+        const [first] = focusable();
+        if (first) first.focus();
+      }
     };
 
     menuToggle.addEventListener('click', () => setOpen(menu.hidden));
@@ -143,10 +149,35 @@
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !menu.hidden) {
+      if (menu.hidden) return;
+
+      if (event.key === 'Escape') {
         setOpen(false);
         menuToggle.focus();
+        return;
       }
+
+      // keep Tab inside the open menu instead of wandering into the page behind it
+      if (event.key === 'Tab') {
+        const items = focusable();
+        if (!items.length) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    // a tap anywhere else puts the page back
+    document.addEventListener('pointerdown', (event) => {
+      if (menu.hidden) return;
+      if (menu.contains(event.target) || menuToggle.contains(event.target)) return;
+      setOpen(false);
     });
 
     window.addEventListener('resize', () => {
@@ -154,7 +185,33 @@
     });
   }
 
-  /* ---------------- 2. current section in the nav ---------------- */
+  /* ---------------- 2. how far down the page you are ---------------- */
+
+  const progress = document.getElementById('nav-progress');
+
+  if (progress) {
+    let queued = false;
+
+    const paint = () => {
+      queued = false;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      progress.style.width = `${(ratio * 100).toFixed(2)}%`;
+    };
+
+    const queue = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(paint);
+    };
+
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    paint();
+  }
+
+  /* ---------------- 3. current section in the nav ---------------- */
 
   const sectionLinks = [...document.querySelectorAll('.nav__links a[href^="#"]')];
 
@@ -182,22 +239,24 @@
     }
   }
 
-  /* ---------------- 3. copy email ---------------- */
+  /* ---------------- 4. copy email ---------------- */
 
   const copyButton = document.querySelector('[data-copy]');
 
-  if (copyButton && navigator.clipboard) {
-    const original = copyButton.textContent;
+  const copyStatus = document.getElementById('copy-status');
 
+  if (copyButton && navigator.clipboard) {
     copyButton.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(copyButton.dataset.copy);
-        copyButton.textContent = 'Copied';
+        copyButton.classList.add('is-done');
+        if (copyStatus) copyStatus.textContent = `${copyButton.dataset.copy} copied to the clipboard`;
         window.setTimeout(() => {
-          copyButton.textContent = original;
-        }, 1600);
+          copyButton.classList.remove('is-done');
+          if (copyStatus) copyStatus.textContent = '';
+        }, 2400);
       } catch {
-        window.location.href = `mailto:${copyButton.dataset.copy}`;
+        if (copyStatus) copyStatus.textContent = 'Copying was blocked. Use the address above.';
       }
     });
   }

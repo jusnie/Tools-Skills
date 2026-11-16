@@ -13,7 +13,7 @@ portfolio/
 ├── main.js                 menu, nav spy, copy button, Paddle
 ├── DESIGN.md               the committed world: tokens and the reasons behind them
 ├── assets/
-│   ├── img/                key art + three scenes, WebP + PNG fallback
+│   ├── img/                key art + three scenes (WebP + PNG), share card, touch icon
 │   ├── fonts/              paperboy.woff2 (1.4KB) + .ttf, the display face
 │   └── svg/                mark, favicon, six sheet sprites + the avatar pair
 └── tools/
@@ -55,6 +55,23 @@ Two things carry the game-portfolio argument, both static:
 node tools/pixelfont.mjs --sprite tools/sprites/sheep.json --out assets/svg/sprite-sheep.svg --scale 1
 python3 tools/preview.py assets/svg/sprite-sheep.svg /tmp/sheep.png 8   # look at it
 ```
+
+## Wayfinding and the boring essentials
+
+- The nav carries all five sections (`#work`, `#art`, `#tools`, `#about`, `#contact`);
+  before this pass `#tools` was reachable only by scrolling, so the scroll-spy had a
+  dead zone between Art and About.
+- A 2px ember rule under the sticky header shows read position — the same bar
+  language as the loading screen's track, not a second visual system.
+- The mobile menu traps Tab, closes on Escape, on an outside tap, and on resize; it
+  focuses its first item when opened.
+- Copy puts a sentence in `role="status"`, so the confirmation is announced and not
+  signalled by colour alone.
+- External links open in a new tab with `rel="noopener noreferrer"` and keep a
+  hidden "(opens in a new tab)" for screen readers.
+- JSON-LD structured data (`Person`), a 1200 × 630 share card, an Apple touch
+  icon, `robots.txt`, and a print stylesheet that drops the lift, the nav and the
+  shadows.
 
 ## The lift
 
@@ -136,9 +153,10 @@ python3 tools/preview.py assets/svg/mark.svg /tmp/mark.png 8
 python3 -c "from PIL import ImageFont; ImageFont.truetype('assets/fonts/paperboy.ttf', 40)"
 ```
 
-`smoke.mjs` boots `index.html` in jsdom and checks structure: one h1, four nav
-links that all resolve, exactly one current section, six sprites, alt text
-everywhere, no leftover canvas. Then it opens and closes the mobile menu and fails
+`smoke.mjs` boots `index.html` in jsdom and checks structure: one h1, five nav
+links that all resolve, exactly one current section, seven sprites, no skipped
+heading levels, alt text everywhere, a `Person` in the structured data,
+`noopener` on every external link, and no leftover canvas. Then it opens and closes the mobile menu and fails
 on any runtime error. It checks every asset path too, `srcset` included.
 
 ## Deploy

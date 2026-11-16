@@ -66,7 +66,7 @@ for (const image of doc.querySelectorAll('img')) {
 
 /* nav: every link points at a real section, and the spy marks the current one */
 const navLinks = [...doc.querySelectorAll('.nav__links a')];
-if (navLinks.length !== 4) problems.push(`expected four nav links, found ${navLinks.length}`);
+if (navLinks.length !== 5) problems.push(`expected five nav links, found ${navLinks.length}`);
 for (const link of navLinks) {
   const target = doc.querySelector(link.getAttribute('href'));
   if (!target) problems.push(`nav link points nowhere: ${link.getAttribute('href')}`);
@@ -74,9 +74,35 @@ for (const link of navLinks) {
 const current = navLinks.filter((link) => link.getAttribute('aria-current') === 'true');
 if (current.length !== 1) problems.push(`expected one current nav link, found ${current.length}`);
 
-/* copy button writes the address it advertises */
+/* copy button writes the address it advertises, and says so out loud */
 const copy = $('[data-copy]');
 if (!copy) problems.push('missing copy button');
+const status = $('#copy-status');
+if (!status) problems.push('missing the copy status region');
+else if (status.getAttribute('role') !== 'status') problems.push('copy status is not a live region');
+
+/* wayfinding and machine-readable bits */
+if (!$('#nav-progress')) problems.push('missing the read-position bar');
+const ld = doc.querySelector('script[type="application/ld+json"]');
+if (!ld) problems.push('missing structured data');
+else {
+  try {
+    const data = JSON.parse(ld.textContent);
+    if (data['@type'] !== 'Person') problems.push('structured data is not a Person');
+  } catch {
+    problems.push('structured data is not valid JSON');
+  }
+}
+for (const link of doc.querySelectorAll('a[target="_blank"]')) {
+  const rel = link.getAttribute('rel') || '';
+  if (!rel.includes('noopener')) problems.push(`external link without noopener: ${link.textContent.trim()}`);
+}
+
+/* one h1, then sections in order, no skipped levels */
+const levels = [...doc.querySelectorAll('h1, h2, h3')].map((h) => Number(h.tagName[1]));
+for (let i = 1; i < levels.length; i += 1) {
+  if (levels[i] - levels[i - 1] > 1) problems.push(`heading jumps from h${levels[i - 1]} to h${levels[i]}`);
+}
 
 /* mobile menu opens, closes on Escape */
 const toggle = $('.nav__toggle');

@@ -10,10 +10,34 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Jusnie — games, one pixel at a time">
 <meta property="og:description" content="Small games in Godot, hand-made pixel art, and the interfaces around them. Quezon City.">
-<meta property="og:image" content="assets/img/keyart.png">
+<meta property="og:image" content="assets/img/og.png">
+<meta property="og:image:alt" content="Night key art: terraced vegetable plots and a lit farmhouse under a full moon, a lantern on the path">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Jusnie">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/svg/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/paperboy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jusnie",
+  "jobTitle": "Independent game developer and pixel artist",
+  "description": "Independent game developer and pixel artist in Quezon City, building small games in Godot and hand-made pixel art.",
+  "email": "mailto:hello@jusnie.dev",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Quezon City",
+    "addressCountry": "PH"
+  },
+  "knowsAbout": ["Game development", "Godot", "Pixel art", "Interface design"],
+  "sameAs": ["https://github.com/jusnie", "https://x.com/jusnie", "https://jusnie.itch.io"]
+}
+</script>
 </head>
 <body class="is-lifting">
 <a class="skip" href="#main">Skip to content</a>
@@ -39,6 +63,7 @@
     <nav class="nav__links" aria-label="Sections">
       <a href="#work">Work</a>
       <a href="#art">Art</a>
+      <a href="#tools">Tools</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -55,11 +80,14 @@
     <div class="wrap">
       <a href="#work">Work</a>
       <a href="#art">Art</a>
+      <a href="#tools">Tools</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="mailto:hello@jusnie.dev">hello@jusnie.dev</a>
     </div>
   </div>
+
+  <div class="nav__progress" aria-hidden="true"><span id="nav-progress"></span></div>
 </header>
 
 <noscript>
@@ -311,10 +339,12 @@
         <a class="contact__mail" href="mailto:hello@jusnie.dev">hello@jusnie.dev</a>
         <button class="btn btn--small" type="button" data-copy="hello@jusnie.dev">Copy</button>
       </div>
+      <p class="contact__status" role="status" aria-live="polite" id="copy-status"></p>
+      <p class="contact__avail"><span class="marker" aria-hidden="true"></span>Freelance from March 2027 · Quezon City, UTC+8</p>
       <ul class="contact__links">
-        <li><a href="https://github.com/jusnie">GitHub</a></li>
-        <li><a href="https://x.com/jusnie">X</a></li>
-        <li><a href="https://jusnie.itch.io">itch.io</a></li>
+        <li><a href="https://github.com/jusnie" target="_blank" rel="noopener noreferrer">GitHub<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a href="https://x.com/jusnie" target="_blank" rel="noopener noreferrer">X<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a href="https://jusnie.itch.io" target="_blank" rel="noopener noreferrer">itch.io<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li>
       </ul>
     </div>
   </section>

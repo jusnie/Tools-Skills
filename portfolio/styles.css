@@ -217,6 +217,22 @@ html {
   border-bottom: 2px solid var(--ink);
 }
 
+.nav__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  pointer-events: none;
+}
+
+.nav__progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--ember);
+}
+
 .nav__inner {
   display: flex;
   align-items: center;
@@ -1058,12 +1074,68 @@ body.is-lifting {
   border-bottom-color: var(--ink);
 }
 
+.btn.is-done {
+  color: var(--ember);
+  border-color: var(--ember);
+  box-shadow: 4px 4px 0 var(--ember);
+}
+
+.btn--small.is-done {
+  box-shadow: 3px 3px 0 var(--ember);
+}
+
+.contact__status {
+  margin: -6px 0 0;
+  min-height: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.contact__avail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
 .contact__links {
   display: flex;
   gap: 20px;
   margin: 6px 0 0;
   padding: 0;
   list-style: none;
+}
+
+.ext {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 0.9em;
+  color: var(--muted);
+  transition: color 140ms var(--ease), transform 140ms var(--ease);
+}
+
+.contact__links a:hover .ext {
+  color: var(--ember);
+  transform: translate(1px, -1px);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .contact__links a {
@@ -1265,6 +1337,64 @@ body.is-lifting {
 
   .contact__title {
     font-size: 30px;
+  }
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .btn--small,
+  .nav__toggle {
+    min-height: 44px;
+  }
+
+  .nav__menu a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .contact__links a {
+    padding-block: 10px;
+  }
+}
+
+@media print {
+  .lift,
+  .nav,
+  .skip,
+  .hero__actions,
+  .contact__row .btn,
+  .hero__art {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .wrap {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .card,
+  .section__head,
+  .sprite-set li,
+  .about__figure {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .section {
+    padding-block: 24px;
+    break-inside: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #444;
   }
 }
 
