@@ -547,7 +547,7 @@ body.is-lifting {
 
 .sprite-set li {
   display: grid;
-  grid-template-rows: 80px auto;
+  grid-template-rows: 64px auto;
   align-content: space-between;
   justify-items: center;
   gap: 10px;
@@ -565,11 +565,6 @@ body.is-lifting {
   width: 64px;
   height: 64px;
   align-self: end;
-}
-
-.sprite-set__avatar img {
-  width: 80px;
-  height: 80px;
 }
 
 .sprite-set span {

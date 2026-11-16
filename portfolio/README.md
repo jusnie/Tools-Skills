@@ -22,7 +22,7 @@ portfolio/
     ├── avatar.sprite.json  the 16×16 mark, as ASCII art plus a colour key
     ├── sprites/            six 16×16 sprites for the sheet, same format
     │   ├── bench-1..4.json  the loading-screen lift, one per bar height
-    │   ├── avatar.json      the 40×40 portrait, drawn from a photo
+    │   ├── avatar.json      the 32×32 portrait, drawn from a photo
     │   └── avatar-full.json the 40×64 full body: hood, headphones, onyx v5 pants
     ├── preview.py          rasterizes the generated SVGs without a browser
     ├── build-images.sh     generated art → shared palette → pixel PNG
@@ -46,9 +46,10 @@ Two things carry the game-portfolio argument, both static:
 
 - **Key art** (`assets/img/keyart.*`, 384 × 216) in a 2px frame with a credits
   strip — title, engine, status. No video, no canvas.
-- **A sprite sheet** at `#art`: six 16 × 16 sprites plus the author's own 40 × 40
+- **A sprite sheet** at `#art`: six 16 × 16 sprites plus the author's own 32 × 32
   portrait, authored as ASCII in `tools/sprites/*.json`, compiled to SVG by
-  `tools/pixelfont.mjs`, and shown at 4× on the same 35 colours as the scenes.
+  `tools/pixelfont.mjs`, and shown at 4× (the 32 px portrait at 2×) on the same
+  35 colours as the scenes.
   Change a sprite by editing its JSON and rerunning:
 
 ```bash
