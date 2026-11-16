@@ -440,7 +440,7 @@ body.is-lifting {
 .lift__frame {
   display: block;
   width: 288px;
-  height: 192px;
+  height: auto;
   max-width: 82vw;
 }
 
@@ -1337,6 +1337,15 @@ body.is-lifting {
 
   .contact__title {
     font-size: 30px;
+  }
+
+  .sprite-set {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .sprite-set li {
+    padding: 14px 8px 12px;
   }
 }
 
