@@ -174,9 +174,11 @@ async function main() {
     console.log("\nApplying runtime bindings via `whop apps secrets set`…");
     const secretsToPush = { ...createdIds };
     if (environment === "sandbox") {
-      // Production Whop hosting auto-signs production calls; sandbox mode uses the sandbox API key
-      secretsToPush.WHOP_API_KEY = apiKey;
-      secretsToPush.WHOP_ACCOUNT_ID = accountId;
+      // Use dedicated WHOP_SANDBOX_* secret names so they never collide with
+      // Whop Hosting's reserved production WHOP_ACCOUNT_ID binding.
+      delete secretsToPush.WHOP_ACCOUNT_ID;
+      secretsToPush.WHOP_SANDBOX_ACCOUNT_ID = accountId;
+      secretsToPush.WHOP_SANDBOX_API_KEY = apiKey;
     } else {
       // WHOP_ACCOUNT_ID is reserved & automatically set on production hosting
       delete secretsToPush.WHOP_ACCOUNT_ID;

@@ -53,6 +53,8 @@ interface WorkerBindings {
   WHOP_ACCOUNT_ID?: string;
   WHOP_API_ORIGIN?: string;
   WHOP_API_KEY?: string;
+  WHOP_SANDBOX_ACCOUNT_ID?: string;
+  WHOP_SANDBOX_API_KEY?: string;
   WHOP_ENVIRONMENT?: string;
   WHOP_PRODUCT_ID?: string;
   WHOP_PLAN_INSPECTION?: string;
@@ -101,8 +103,13 @@ function resolveRuntime(env: WorkerBindings): ResolvedWhopRuntime {
   const rawEnv = readBinding(env, "WHOP_ENVIRONMENT").toLowerCase();
   const environment: WhopRuntimeEnvironment = rawEnv === "sandbox" ? "sandbox" : "production";
 
-  const accountId = readBinding(env, "WHOP_ACCOUNT_ID") || COMPANY_CONFIG.whop.defaultAccountId;
-  const apiKey = readBinding(env, "WHOP_API_KEY");
+  const accountId =
+    (environment === "sandbox" ? readBinding(env, "WHOP_SANDBOX_ACCOUNT_ID") : "") ||
+    readBinding(env, "WHOP_ACCOUNT_ID") ||
+    COMPANY_CONFIG.whop.defaultAccountId;
+  const apiKey =
+    (environment === "sandbox" ? readBinding(env, "WHOP_SANDBOX_API_KEY") : "") ||
+    readBinding(env, "WHOP_API_KEY");
   const injectedOrigin = readBinding(env, "WHOP_API_ORIGIN");
 
   const apiOrigin =
