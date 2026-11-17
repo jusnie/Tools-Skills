@@ -1004,7 +1004,7 @@ body.is-lifting {
 
 .about__figure img {
   display: block;
-  width: min(100%, 200px);
+  width: min(100%, 240px);
   height: auto;
   margin: 0 auto;
 }

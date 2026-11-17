@@ -23,7 +23,7 @@ portfolio/
     ├── sprites/            six 16×16 sprites for the sheet, same format
     │   ├── bench-1..4.json  the loading-screen lift, one per bar height
     │   ├── avatar.json      the 32×32 portrait, drawn from a photo
-    │   └── avatar-full.json the 40×64 full body: hood, headphones, onyx v5 pants
+    │   └── avatar-full.json the 80×112 full body: guard stance, hood, headphones, onyx v5
     ├── preview.py          rasterizes the generated SVGs without a browser
     ├── build-images.sh     generated art → shared palette → pixel PNG
     ├── palette.txt         35 colours, in order
