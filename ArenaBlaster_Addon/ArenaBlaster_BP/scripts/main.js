@@ -76,42 +76,97 @@ function isProtectedBlock(id) {
  * Raycast from the player's crosshair.
  * Returns { location, block, entity, distance } or null.
  */
+/**
+ * Manual crosshair raycast.
+ * The built-in getBlockFromViewDirection / getEntityFromViewDirection calls
+ * fail silently on 26.x builds, so we march the view vector ourselves.
+ */
 function getAimTarget(player) {
   const eye = getEyeLocation(player);
-  let best = null;
-
+  let dir;
   try {
-    const blockHit = player.getBlockFromViewDirection({ maxDistance: CONFIG.AIM_RANGE });
-    if (blockHit && blockHit.block) {
-      const loc = blockHit.block.center();
-      best = {
-        location: loc,
-        block: blockHit.block,
-        entity: null,
-        distance: eye.distanceTo(loc),
-      };
-    }
+    dir = player.getViewDirection();
   } catch (e) {
-    // ignore
+    dir = undefined;
   }
+  if (!dir) return null;
 
+  const range = CONFIG.AIM_RANGE;
+  const step = 0.4;
+
+  // 1) Nearest entity along the ray (skip the ship itself)
+  let bestEntity = null;
+  let bestEntDist = Infinity;
   try {
-    const entityHit = player.getEntityFromViewDirection({ maxDistance: CONFIG.AIM_RANGE });
-    if (entityHit && entityHit.entity) {
-      const ent = entityHit.entity;
-      if (ent.typeId !== CONFIG.SHIP_ID) {
-        const loc = ent.getHeadLocation ? ent.getHeadLocation() : ent.location;
-        const dist = eye.distanceTo(loc);
-        if (!best || dist < best.distance) {
-          best = { location: loc, block: null, entity: ent, distance: dist };
-        }
+    const searchCenter = {
+      x: eye.x + dir.x * (range * 0.5),
+      y: eye.y + dir.y * (range * 0.5),
+      z: eye.z + dir.z * (range * 0.5),
+    };
+    const near = player.dimension.getEntities({
+      location: searchCenter,
+      maxDistance: range * 0.75,
+    });
+    for (const ent of near) {
+      if (ent.id === player.id) continue;
+      if (ent.typeId === CONFIG.SHIP_ID) continue;
+      if (!isValid(ent)) continue;
+      let toEnt;
+      try {
+        toEnt = ent.getHeadLocation();
+      } catch (e) {
+        toEnt = ent.location;
+      }
+      if (!toEnt) continue;
+      const vx = toEnt.x - eye.x;
+      const vy = toEnt.y - eye.y;
+      const vz = toEnt.z - eye.z;
+      const along = vx * dir.x + vy * dir.y + vz * dir.z;
+      if (along < 0 || along > range) continue;
+      const perp = Math.sqrt(Math.max(0, vx * vx + vy * vy + vz * vz - along * along));
+      if (perp > 1.6) continue;
+      if (along < bestEntDist) {
+        bestEntDist = along;
+        bestEntity = ent;
       }
     }
-  } catch (e) {
-    // ignore
+  } catch (e) {}
+
+  // 2) First solid block along the ray
+  let blockHit = null;
+  let blockDist = Infinity;
+  try {
+    for (let d = 0.5; d <= range; d += step) {
+      const pos = {
+        x: Math.floor(eye.x + dir.x * d),
+        y: Math.floor(eye.y + dir.y * d),
+        z: Math.floor(eye.z + dir.z * d),
+      };
+      const block = player.dimension.getBlock(pos);
+      if (!block) continue;
+      if (block.isAir || block.isLiquid) continue;
+      blockHit = block;
+      blockDist = d;
+      break;
+    }
+  } catch (e) {}
+
+  if (bestEntity && bestEntDist <= blockDist) {
+    let loc;
+    try {
+      loc = bestEntity.getHeadLocation();
+    } catch (e) {
+      loc = bestEntity.location;
+    }
+    return { location: loc, block: null, entity: bestEntity, distance: bestEntDist };
   }
 
-  return best;
+  if (blockHit) {
+    const loc = blockHit.center();
+    return { location: loc, block: blockHit, entity: null, distance: blockDist };
+  }
+
+  return null;
 }
 
 function spawnParticleSafe(dimension, id, location) {
@@ -427,12 +482,25 @@ function triggerBlast(player, target) {
 
 function tryFire(player) {
   if (!player || !isHoldingDevice(player)) return;
-  const target = getAimTarget(player);
+  let target = getAimTarget(player);
   if (!target) {
+    // Fallback: drop the strike a few blocks in front of the player so Use always does something
     try {
-      player.onScreenDisplay.setActionBar("§cNo target in range! Aim at a block/entity.");
-    } catch (e) {}
-    return;
+      const dir = player.getViewDirection();
+      const eye = getEyeLocation(player);
+      const px = eye.x + dir.x * 6;
+      const pz = eye.z + dir.z * 6;
+      // find the ground
+      let y = eye.y + dir.y * 6;
+      for (let i = 0; i < 40; i++) {
+        const b = player.dimension.getBlock({ x: Math.floor(px), y: Math.floor(y), z: Math.floor(pz) });
+        if (b && !b.isAir && !b.isLiquid) break;
+        y -= 1;
+      }
+      target = { location: { x: px, y: y + 1, z: pz }, block: null, entity: null, distance: 6 };
+    } catch (e) {
+      return;
+    }
   }
   triggerBlast(player, target);
 }
@@ -576,6 +644,15 @@ try {
   if (world.afterEvents.playerUseItem) {
     world.afterEvents.playerUseItem.subscribe((event) => {
       tryFire(event.player);
+    });
+  }
+} catch (e) {}
+
+// Some 26.x builds only raise itemStartUse for hand-equipped items
+try {
+  if (world.afterEvents.itemStartUse) {
+    world.afterEvents.itemStartUse.subscribe((event) => {
+      if (event.itemStack?.typeId === CONFIG.ITEM_ID) tryFire(event.source);
     });
   }
 } catch (e) {}

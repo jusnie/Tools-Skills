@@ -28,11 +28,11 @@ The device is now a **real 3D model in your hand** (not just a flat icon), built
 
 | File | Role |
 |---|---|
-| `ArenaBlaster_RP/models/entity/instellar_device.geo.json` | 3D geometry — 14 cubes: body, barrel, muzzle ring, cyan lens, orange cell, grip, sight fin, antenna, vents, rear cap |
+| `ArenaBlaster_RP/models/entity/instellar_device.geo.json` | 3D geometry — model-bound to `q.item_slot_to_bone_name(context.item_slot)`, 11 cubes: body, core block, barrel, muzzle ring, lens, grip, fins, antenna, base plate |
 | `ArenaBlaster_RP/textures/items/instellar_device_3d.png` | 64×64 detailed texture (metal panels, rivets, glow lens/cell) |
 | `ArenaBlaster_RP/attachables/instellar_device.player.json` | Attachable — shows the model in hand (first/third person, main/off hand) |
-| `ArenaBlaster_RP/animations/instellar_device.animation.json` | Hold poses + **charge shake** (plays while you hold Use) + recoil |
-| `ArenaBlaster_BP/items/instellar_device.json` | `minecraft:wearable` (mainhand) so the attachable appears |
+| `ArenaBlaster_RP/animations/instellar_device.animation.json` | Hold poses (first/third person, main/off hand) — required, the binding offsets the model by -24 Y without them |
+| `ArenaBlaster_BP/items/instellar_device.json` | `minecraft:hand_equipped` + `minecraft:glint`, format 1.21.70 |
 
 **References used (GitHub):**
 - [MicrosoftDocs/minecraft-creator — AddCustomItems (Wrench)](https://github.com/MicrosoftDocs/minecraft-creator/blob/main/creator/Documents/AddCustomItems.md) — official attachable + geo pattern

@@ -47,8 +47,8 @@ export const CONFIG = {
   // --- Alien spaceship orbital strike sequence ---
   USE_SHIP_SEQUENCE: true, // true = ship flies in, false = instant blast
   SHIP_ID: "arena:alien_ship",
-  SHIP_SPAWN_HEIGHT: 30, // spawn height above target
-  SHIP_HOVER_HEIGHT: 12, // hover height above target
+  SHIP_SPAWN_HEIGHT: 24, // spawn height above target
+  SHIP_HOVER_HEIGHT: 10, // hover height above target
   SHIP_DESCEND_TICKS: 40, // fly-in time (20 ticks = 1s)
   SHIP_CHARGE_TICKS: 40, // charge time
   SHIP_AIM_TICKS: 20, // aim/lock time

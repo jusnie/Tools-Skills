@@ -6,24 +6,35 @@
         "identifier": "geometry.alien_ship",
         "texture_width": 64,
         "texture_height": 64,
-        "visible_bounds_width": 8,
-        "visible_bounds_height": 6,
-        "visible_bounds_offset": [0, 2, 0]
+        "visible_bounds_width": 16,
+        "visible_bounds_height": 10,
+        "visible_bounds_offset": [0, 4, 0]
       },
       "bones": [
         {
           "name": "alien_ship",
           "pivot": [0, 0, 0],
           "cubes": [
-            { "origin": [-6, 0, -6], "size": [12, 1, 12], "uv": [0, 0] },
-            { "origin": [-4, 1, -4], "size": [8, 1, 8], "uv": [0, 16] },
-            { "origin": [-2, 2, -2], "size": [4, 2, 4], "uv": [32, 16] },
-            { "origin": [-1, 4, -1], "size": [2, 1, 2], "uv": [48, 16] },
-            { "origin": [-2, -1, -2], "size": [4, 1, 4], "uv": [0, 32] },
-            { "origin": [-5, 0.5, -6.5], "size": [10, 0.5, 0.5], "uv": [16, 32] },
-            { "origin": [-0.25, 5, -0.25], "size": [0.5, 2, 0.5], "uv": [32, 32] },
-            { "origin": [-7, 0, -1], "size": [1, 1, 2], "uv": [48, 32] },
-            { "origin": [6, 0, -1], "size": [1, 1, 2], "uv": [48, 32] }
+            { "origin": [-14, 0, -14], "size": [28, 3, 28], "uv": [0, 0] },
+            { "origin": [-11, 3, -11], "size": [22, 3, 22], "uv": [0, 31] },
+            { "origin": [-7, 6, -7], "size": [14, 3, 14], "uv": [0, 0] },
+            { "origin": [-4, 9, -4], "size": [8, 4, 8], "uv": [0, 31] },
+            { "origin": [-2, 13, -2], "size": [4, 4, 4], "uv": [0, 0] },
+            { "origin": [-3, 17, -3], "size": [6, 3, 6], "uv": [0, 31] },
+            { "origin": [-16, 1, -6], "size": [4, 2, 12], "uv": [0, 0] },
+            { "origin": [12, 1, -6], "size": [4, 2, 12], "uv": [0, 0] },
+            { "origin": [-6, 1, -16], "size": [12, 2, 4], "uv": [0, 0] },
+            { "origin": [-6, 1, 12], "size": [12, 2, 4], "uv": [0, 0] },
+            { "origin": [-1.5, -4, -1.5], "size": [3, 4, 3], "uv": [0, 31] },
+            { "origin": [-2.5, -1, -2.5], "size": [5, 1, 5], "uv": [0, 0] }
+          ]
+        },
+        {
+          "name": "core",
+          "parent": "alien_ship",
+          "pivot": [0, 20, 0],
+          "cubes": [
+            { "origin": [-1.5, 20, -1.5], "size": [3, 3, 3], "uv": [0, 31] }
           ]
         }
       ]

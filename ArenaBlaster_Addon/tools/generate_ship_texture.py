@@ -61,5 +61,35 @@ d.rectangle([52, 36, 55, 39], fill=(255, 106, 0, 255))
 d.rectangle([56, 36, 59, 39], fill=(255, 106, 0, 255))
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
+
+# --- extra UV regions used by the enlarged 12-cube hull ---
+def flat(x0, y0, base, panel=None):
+    for y in range(16):
+        for x in range(16):
+            img.putpixel((x0 + x, y0 + y), base + (255,))
+    if panel:
+        for i in range(0, 16, 4):
+            d.line([(x0 + i, y0), (x0 + i, y0 + 15)], fill=panel + (255,))
+            d.line([(x0, y0 + i), (x0 + 15, y0 + i)], fill=panel + (255,))
+
+flat(0, 0, (45, 52, 70), panel=(30, 35, 50))     # lower hull
+flat(0, 31, (58, 68, 92), panel=(42, 50, 68))    # mid hull / engine pod
+flat(32, 0, (34, 40, 55), panel=(22, 26, 38))    # fins / dark plates
+flat(32, 31, (38, 44, 60), panel=(26, 30, 44))   # belly
+flat(48, 31, (60, 70, 95), panel=(45, 52, 70))   # core housing
+
+# cyan rim lights on the hull plates
+for i in range(0, 16, 3):
+    img.putpixel((i, 31), (0, 229, 255, 255))
+    img.putpixel((i, 0), (0, 229, 255, 255))
+    img.putpixel((32 + i, 31), (0, 229, 255, 255))
+
+# glowing core
+for y in range(32, 47):
+    for x in range(34, 46):
+        d.point((x, y), fill=(140, 245, 255, 255))
+d.rectangle([35, 33, 45, 46], fill=(0, 229, 255, 255))
+d.rectangle([37, 35, 43, 44], fill=(220, 255, 255, 255))
+
 img.save(OUT)
 print(f"saved {OUT} {img.size}")

@@ -18,6 +18,10 @@
       },
       "scripts": {
         "animate": ["hover"]
+      },
+      "spawn_egg": {
+        "base_color": "#2a3550",
+        "overlay_color": "#26e0dc"
       }
     }
   }

@@ -4,19 +4,33 @@
     "name": "Arena Blaster - Resource Pack",
     "description": "Device model in hand + explosion / arena ring particles + alien ship for Instellar Arena Device.",
     "uuid": "b4ca8693-8330-47fd-889b-02be6ddd5ce4",
-    "version": [2, 0, 0],
-    "min_engine_version": [1, 26, 0]
+    "version": [
+      2,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      26,
+      0
+    ]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "0cc3e73a-af17-4bf0-bf2b-8f084e543513",
-      "version": [2, 0, 0]
+      "version": [
+        2,
+        1,
+        0
+      ]
     }
   ],
   "dependencies": [],
   "metadata": {
-    "authors": ["Arena Blaster"],
+    "authors": [
+      "Arena Blaster"
+    ],
     "license": "MIT",
     "product_type": "addon"
   }
