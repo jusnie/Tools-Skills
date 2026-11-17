@@ -1,0 +1,85 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.instellar_device.firstperson_main_hand": {
+      "loop": true,
+      "bones": {
+        "instellar_device": {
+          "rotation": [90, 60, -40],
+          "position": [4, 10, 4],
+          "scale": 1.5
+        }
+      }
+    },
+    "animation.instellar_device.firstperson_off_hand": {
+      "loop": true,
+      "bones": {
+        "instellar_device": {
+          "rotation": [90, 60, -40],
+          "position": [-4, 10, 4],
+          "scale": 1.5
+        }
+      }
+    },
+    "animation.instellar_device.thirdperson_main_hand": {
+      "loop": true,
+      "bones": {
+        "instellar_device": {
+          "rotation": [90, 0, 0],
+          "position": [0.5, 13.5, -3]
+        }
+      }
+    },
+    "animation.instellar_device.thirdperson_off_hand": {
+      "loop": true,
+      "bones": {
+        "instellar_device": {
+          "rotation": [90, 0, 0],
+          "position": [-0.5, 13.5, -3]
+        }
+      }
+    },
+    "animation.instellar_device.charge": {
+      "loop": true,
+      "animation_length": 0.4,
+      "bones": {
+        "instellar_device": {
+          "rotation": {
+            "0.0": [90, 60, -40],
+            "0.1": [88, 62, -38],
+            "0.2": [92, 58, -42],
+            "0.3": [88, 62, -38],
+            "0.4": [90, 60, -40]
+          },
+          "position": {
+            "0.0": [4, 10, 4],
+            "0.1": [4.2, 10.2, 4],
+            "0.2": [3.8, 9.8, 4],
+            "0.3": [4.2, 10.2, 4],
+            "0.4": [4, 10, 4]
+          },
+          "scale": 1.5
+        }
+      }
+    },
+    "animation.instellar_device.recoil": {
+      "loop": false,
+      "animation_length": 0.25,
+      "bones": {
+        "instellar_device": {
+          "rotation": {
+            "0.0": [90, 60, -40],
+            "0.08": [110, 60, -40],
+            "0.25": [90, 60, -40]
+          },
+          "position": {
+            "0.0": [4, 10, 4],
+            "0.08": [4, 10, 6],
+            "0.25": [4, 10, 4]
+          },
+          "scale": 1.5
+        }
+      }
+    }
+  }
+}

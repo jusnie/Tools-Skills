@@ -1,0 +1,24 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "arena:alien_ship",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/alien_ship"
+      },
+      "geometry": {
+        "default": "geometry.alien_ship"
+      },
+      "render_controllers": ["controller.render.alien_ship"],
+      "animations": {
+        "hover": "animation.alien_ship.hover"
+      },
+      "scripts": {
+        "animate": ["hover"]
+      }
+    }
+  }
+}

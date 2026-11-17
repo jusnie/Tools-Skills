@@ -1,0 +1,35 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Arena Blaster - Behavior Pack",
+    "description": "Instellar Arena Device: point at a block/entity to call an alien ship orbital strike + arena ring.",
+    "uuid": "a66b4e8d-d01b-4cc4-b7d4-9596471b0a3e",
+    "version": [2, 0, 0],
+    "min_engine_version": [1, 26, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "f7fc03e6-cea3-4404-acfe-8bf92305ef7c",
+      "version": [2, 0, 0]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "entry": "scripts/main.js",
+      "uuid": "9dd8e602-dfd1-48f2-bdc4-bffe2d499ed2",
+      "version": [2, 0, 0]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.1.0"
+    }
+  ],
+  "metadata": {
+    "authors": ["Arena Blaster"],
+    "license": "MIT",
+    "product_type": "addon"
+  }
+}

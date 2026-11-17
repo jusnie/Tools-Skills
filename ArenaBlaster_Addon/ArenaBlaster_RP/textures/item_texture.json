@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "Arena Blaster - Resource Pack",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "instellar_device": {
+      "textures": "textures/items/instellar_device"
+    }
+  }
+}

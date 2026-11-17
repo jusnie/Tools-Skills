@@ -1,0 +1,50 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "arena:sparks",
+      "basic_render_parameters": {
+        "material": "particles_alpha",
+        "texture": "textures/particles/sparks"
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 40
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.3
+      },
+      "minecraft:emitter_shape_point": {
+        "offset": [0, 0, 0]
+      },
+      "minecraft:particle_lifetime": {
+        "min": 0.3,
+        "max": 0.9
+      },
+      "minecraft:particle_initial_speed": {
+        "min": 6,
+        "max": 14
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [0.15, 0.15],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 16,
+          "texture_height": 16,
+          "uv": [0, 0],
+          "uv_size": [16, 16]
+        }
+      },
+      "minecraft:particle_appearance_tint": {
+        "color": {
+          "gradient": {
+            "0.0": "#FFFFFF",
+            "0.4": "#FFEB3B",
+            "1.0": "#FF9800"
+          }
+        }
+      }
+    }
+  }
+}
