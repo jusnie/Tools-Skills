@@ -21,6 +21,22 @@ import {
   scatterDebris,
   AIR,
 } from "./terrain.js";
+import {
+  T,
+  T_FIRE,
+  TIMELINE,
+  STRIKE_LENGTH,
+  charging,
+  beamEnv,
+  craterEnv,
+  smokeEnv,
+  plumeTop,
+  sigilDraw,
+  flashEnv,
+  smoothstep,
+  mix,
+  clamp,
+} from "./timeline.js";
 
 // ------------------------------------------------------------
 // The lasers
@@ -35,6 +51,8 @@ export const STRIKES = {
     chargeTicks: 30,
     beamParticle: "minecraft:basic_crit_particle",
     impactParticle: "minecraft:huge_explosion_emitter",
+    forge: true,
+    craterEmber: "minecraft:basic_flame_particle",
     crater: { radius: 11, depth: 9, roughness: 0.16 },
     lining: [
       ["minecraft:obsidian", 0.34],
@@ -61,6 +79,8 @@ export const STRIKES = {
     chargeTicks: 34,
     beamParticle: "minecraft:endrod",
     impactParticle: "minecraft:huge_explosion_emitter",
+    forge: false,
+    craterEmber: "minecraft:endrod",
     crater: { radius: 9, depth: 7, roughness: 0.02 },
     lining: [
       ["minecraft:smooth_quartz", 0.45],
@@ -88,6 +108,8 @@ export const STRIKES = {
     incoming: true,
     beamParticle: "minecraft:basic_flame_particle",
     impactParticle: "minecraft:huge_explosion_emitter",
+    forge: true,
+    craterEmber: "minecraft:basic_flame_particle",
     crater: { radius: 19, depth: 14, roughness: 0.22 },
     lining: [
       ["minecraft:basalt", 0.3],
@@ -116,6 +138,8 @@ export const STRIKES = {
     incoming: true,
     beamParticle: "minecraft:basic_crit_particle",
     impactParticle: "minecraft:huge_explosion_emitter",
+    forge: true,
+    craterEmber: "minecraft:electric_spark_particle",
     crater: { radius: 8, depth: 16, roughness: 0.08 },
     lining: [
       ["minecraft:quartz_block", 0.4],
@@ -315,8 +339,10 @@ export function fireStrike(player, target, key) {
   const skyY = center.y + 70;
   const sky = { x: skyX, y: skyY, z: skyZ };
 
-  const charge = plan.chargeTicks;
-  const impactAt = charge + 10;
+  // The charge length is the ported shader timeline's T_FIRE (4 s), not a per-laser
+  // guess: their charge lines burn in over 0-3.6 s and the beam fires at exactly 4 s.
+  const charge = T_FIRE;
+  const impactAt = charge;
 
   // --- stage 1: lock-on -----------------------------------------
   title(player, `${plan.colour}${plan.title}`, "§7Target locked");
@@ -353,6 +379,19 @@ export function fireStrike(player, target, key) {
           });
         } catch (e) {}
       } else {
+        // forked arcs spiralling down the beam, like the reference's lightning
+        if (plan.forge && i % 3 === 0) {
+          const baseAngle = rng.range(0, Math.PI * 2) + t * 6;
+          for (let k = 0; k < 6; k++) {
+            const p = k / 6;
+            const wobble = Math.sin(t * 9 + k * 1.7) * 1.4;
+            fx(dimension, "minecraft:electric_spark_particle", {
+              x: sky.x + (center.x - sky.x) * p + Math.cos(baseAngle + k) * wobble,
+              y: sky.y + (center.y + 1 - sky.y) * p,
+              z: sky.z + (center.z - sky.z) * p + Math.sin(baseAngle + k) * wobble,
+            });
+          }
+        }
         // a steady stream of particles falling down the beam line, so the
         // strike is impossible to miss even from far away
         for (let k = 0; k < 4; k++) {
@@ -512,6 +551,83 @@ export function fireStrike(player, target, key) {
         }, plan.smoke.ticks * 2 + 10 + i * 2);
       }
     }
+
+    // ---- continuous animation driver --------------------------------
+    // Evaluates the ported shader envelopes every tick from here to the end
+    // of the timeline, instead of firing a few one-shot bursts.
+    const runStart = system.currentTick;
+    const driver = system.runInterval(() => {
+      if (run.cancelled) {
+        try { system.clearRun(driver); } catch (e) {}
+        return;
+      }
+      const tick = system.currentTick - runStart + T_FIRE;
+      if (tick - T_FIRE > STRIKE_LENGTH) {
+        try { system.clearRun(driver); } catch (e) {}
+        return;
+      }
+
+      // 1) the beam column: dense while beam_env is up, thinning as it fades
+      const be = beamEnv(tick);
+      if (be > 0.02) {
+        const height = Math.max(4, sky.y - center.y);
+        const head = center.y + height * Math.pow(1 - clamp((tick - T_FIRE) / mix(T(0.16), T(0.6), 1), 0, 1), 2);
+        const steps = Math.max(6, Math.round(18 * be));
+        for (let i = 0; i < steps; i++) {
+          const p = (system.currentTick % 20) / 20 + i / steps;
+          const y = center.y + ((head - center.y) * (p % 1));
+          const spread = mix(0.35, 1.6, 1 - be);
+          fx(dimension, plan.beamParticle, {
+            x: center.x + (Math.random() - 0.5) * spread,
+            y,
+            z: center.z + (Math.random() - 0.5) * spread,
+          });
+        }
+      }
+
+      // 2) the crater glow / rising embers: crater_env, 0 -> 20 s
+      const ce = craterEnv(tick);
+      if (ce > 0.02) {
+        const count = Math.max(1, Math.round(4 * ce));
+        for (let i = 0; i < count; i++) {
+          const a = Math.random() * Math.PI * 2;
+          const r = Math.random() * plan.crater.radius * 1.3;
+          fx(dimension, plan.craterEmber ?? "minecraft:basic_flame_particle", {
+            x: center.x + Math.cos(a) * r,
+            y: center.y + Math.random() * 3,
+            z: center.z + Math.sin(a) * r,
+          });
+        }
+      }
+
+      // 3) the smoke plume: its crown climbs 11 blocks a second after 1 s
+      const se = smokeEnv(tick);
+      if (se > 0.02) {
+        const top = plumeTop(tick);
+        const R = 3.5 + 0.2 * top;
+        const count = Math.max(1, Math.round(5 * se));
+        for (let i = 0; i < count; i++) {
+          const h = Math.random() * Math.max(4, top);
+          const a = Math.random() * Math.PI * 2;
+          const rr = Math.random() * R;
+          fx(dimension, plan.smoke.particle, {
+            x: center.x + Math.cos(a) * rr,
+            y: center.y + h,
+            z: center.z + Math.sin(a) * rr,
+          });
+        }
+      }
+
+      // 4) the impact flash: hard on at fire, gone in 1.2 s
+      const fe = flashEnv(tick);
+      if (fe > 0.4) {
+        fx(dimension, "minecraft:huge_explosion_emitter", {
+          x: center.x,
+          y: center.y + 2,
+          z: center.z,
+        });
+      }
+    }, 1);
 
     // finishing touches once the block work has spread out
     system.runTimeout(() => {
