@@ -355,7 +355,7 @@ export function shockwave(dimension, center, opts) {
   const waves = opts.waves ?? 3;
   const speed = opts.speed ?? 1.6;
   const maxRadius = opts.radius ?? 24;
-  const particle = opts.particle ?? "minecraft:large_smoke_particle";
+  const particle = opts.particle ?? "minecraft:basic_smoke_particle";
 
   for (let w = 0; w < waves; w++) {
     system.runTimeout(() => {
@@ -385,7 +385,7 @@ export function* smokeColumn(dimension, center, opts) {
   const rng = new Rng(opts.seed ?? 29);
   const height = opts.height ?? 26;
   const ticks = opts.ticks ?? 60;
-  const particle = opts.particle ?? "minecraft:large_smoke_particle";
+  const particle = opts.particle ?? "minecraft:basic_smoke_particle";
   const spread = opts.spread ?? 2.4;
 
   for (let t = 0; t < ticks; t++) {

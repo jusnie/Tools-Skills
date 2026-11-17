@@ -49,7 +49,7 @@ export const STRIKES = {
     flatten: { radius: 22 },
     rubble: { radius: 24, blocks: ["minecraft:blackstone", "minecraft:cobblestone", "minecraft:basalt"] },
     ring: { radius: 22, block: "minecraft:glowstone", accent: "minecraft:sea_lantern" },
-    smoke: { height: 30, ticks: 70, particle: "minecraft:large_smoke_particle" },
+    smoke: { height: 30, ticks: 70, particle: "minecraft:basic_smoke_particle" },
     sounds: { charge: "random.fizz", fire: "mob.warden.sonic_boom", impact: "random.explode" },
   },
 
@@ -102,7 +102,7 @@ export const STRIKES = {
     flatten: { radius: 36 },
     rubble: { radius: 38, blocks: ["minecraft:cobblestone", "minecraft:gravel", "minecraft:andesite"] },
     ring: { radius: 30, block: "minecraft:magma_block", accent: "minecraft:glowstone" },
-    smoke: { height: 60, ticks: 160, particle: "minecraft:large_smoke_particle", spread: 3.4 },
+    smoke: { height: 60, ticks: 160, particle: "minecraft:campfire_tall_smoke_particle", spread: 3.4 },
     extraPuffs: 18,
     sounds: { charge: "beacon.deactivate", fire: "mob.warden.sonic_boom", impact: "random.explode" },
   },
@@ -178,6 +178,24 @@ export function cancelStrike(player) {
 // Helpers
 // ------------------------------------------------------------
 
+const warned = new Set();
+
+/** spawnParticle that shouts once per bad id instead of failing silently. */
+function fx(dimension, id, location) {
+  try {
+    dimension.spawnParticle(id, location);
+    return true;
+  } catch (e) {
+    if (!warned.has(id)) {
+      warned.add(id);
+      try {
+        console.warn(`[Arena Blaster] particle "${id}" failed: ${e} ${e?.message ?? ""}`);
+      } catch (err) {}
+    }
+    return false;
+  }
+}
+
 function bar(player, text) {
   try {
     player.onScreenDisplay.setActionBar(text);
@@ -195,11 +213,20 @@ function title(player, text, sub) {
   } catch (e) {}
 }
 
+const badSounds = new Set();
+
 function sound(dimension, id, location, delayTicks = 0) {
   const play = () => {
     try {
       dimension.playSound(id, location);
-    } catch (e) {}
+    } catch (e) {
+      if (!badSounds.has(id)) {
+        badSounds.add(id);
+        try {
+          console.warn(`[Arena Blaster] sound "${id}" failed: ${e}`);
+        } catch (err) {}
+      }
+    }
   };
   if (delayTicks <= 0) play();
   else system.runTimeout(play, Math.floor(delayTicks));
@@ -242,7 +269,7 @@ function beam(dimension, from, to, particle, density = 2) {
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
     try {
-      dimension.spawnParticle(particle, {
+      fx(dimension, particle, {
         x: from.x + (to.x - from.x) * t,
         y: from.y + (to.y - from.y) * t,
         z: from.z + (to.z - from.z) * t,
@@ -297,7 +324,7 @@ export function fireStrike(player, target, key) {
   sound(dimension, plan.sounds.charge, center);
   shake(player, 0.12, 0.5);
 
-  // --- stage 2: charge ------------------------------------------
+  // --- stage 2: charge + the beam visibly reaches down ----------------
   const chargeSteps = Math.floor(charge / 2);
   for (let i = 0; i <= chargeSteps; i++) {
     system.runTimeout(() => {
@@ -306,7 +333,7 @@ export function fireStrike(player, target, key) {
       // a growing glow at the impact point
       for (let k = 0; k < Math.ceil(t * 6); k++) {
         try {
-          dimension.spawnParticle(plan.beamParticle, {
+          fx(dimension, plan.beamParticle, {
             x: center.x + rng.range(-1.2, 1.2),
             y: center.y + rng.range(0, 2.5),
             z: center.z + rng.range(-1.2, 1.2),
@@ -318,16 +345,26 @@ export function fireStrike(player, target, key) {
         const fall = Math.min(1, t * 1.15);
         const y = sky.y + (center.y + 1 - sky.y) * fall;
         try {
-          dimension.spawnParticle(plan.beamParticle, { x: sky.x, y, z: sky.z });
-          dimension.spawnParticle("minecraft:large_smoke_particle", {
+          fx(dimension, plan.beamParticle, { x: sky.x, y, z: sky.z });
+          fx(dimension, "minecraft:basic_smoke_particle", {
             x: sky.x + rng.range(-0.4, 0.4),
             y: y + 1.5,
             z: sky.z + rng.range(-0.4, 0.4),
           });
         } catch (e) {}
-      } else if (i % 4 === 0) {
-        // the beam flickers down from the sky while it charges
-        beam(dimension, sky, { x: center.x, y: center.y + 2, z: center.z }, plan.beamParticle, 0.6);
+      } else {
+        // a steady stream of particles falling down the beam line, so the
+        // strike is impossible to miss even from far away
+        for (let k = 0; k < 4; k++) {
+          const p = ((i * 4 + k) / (chargeSteps * 4 + 4) + t * 0.5) % 1;
+          try {
+            fx(dimension, plan.beamParticle, {
+              x: sky.x + (center.x - sky.x) * p,
+              y: sky.y + (center.y + 1 - sky.y) * p,
+              z: sky.z + (center.z - sky.z) * p,
+            });
+          } catch (e) {}
+        }
       }
     }, i * 2);
   }
@@ -339,8 +376,8 @@ export function fireStrike(player, target, key) {
     // full beam, flash and jolt
     beam(dimension, sky, { x: center.x, y: center.y + 2, z: center.z }, plan.beamParticle, 2.4);
     try {
-      dimension.spawnParticle(plan.impactParticle, { x: center.x, y: center.y + 1, z: center.z });
-      dimension.spawnParticle("minecraft:huge_explosion_emitter", { x: center.x, y: center.y + 2, z: center.z });
+      fx(dimension, plan.impactParticle, { x: center.x, y: center.y + 1, z: center.z });
+      fx(dimension, "minecraft:huge_explosion_emitter", { x: center.x, y: center.y + 2, z: center.z });
     } catch (e) {}
     sound(dimension, plan.sounds.fire, center);
     soundLate(dimension, plan.sounds.impact, center, player);
@@ -434,7 +471,7 @@ export function fireStrike(player, target, key) {
       waves: 3,
       speed: 1.8,
       radius: Math.min(40, plan.scorch.radius + 6),
-      particle: "minecraft:large_smoke_particle",
+      particle: "minecraft:basic_smoke_particle",
     });
     const smoke = plan.smoke;
     const smokeSteps = smoke.ticks;
@@ -448,7 +485,7 @@ export function fireStrike(player, target, key) {
         const count = 2 + Math.floor(p * 3);
         for (let i = 0; i < count; i++) {
           try {
-            dimension.spawnParticle(smoke.particle, {
+            fx(dimension, smoke.particle, {
               x: center.x + (Math.random() - 0.5) * spread * 2,
               y,
               z: center.z + (Math.random() - 0.5) * spread * 2,
@@ -466,7 +503,7 @@ export function fireStrike(player, target, key) {
           const a = (i / plan.extraPuffs) * Math.PI * 2;
           const r = plan.smoke.height * 0.34;
           try {
-            dimension.spawnParticle("minecraft:large_smoke_particle", {
+            fx(dimension, "minecraft:campfire_tall_smoke_particle", {
               x: center.x + Math.cos(a) * r,
               y: center.y + plan.smoke.height * 0.82 + Math.random() * 4,
               z: center.z + Math.sin(a) * r,
