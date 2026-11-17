@@ -45,25 +45,33 @@ The device is now a **real 3D model in your hand** (not just a flat icon), built
 
 ## 🎮 How to Use
 
-1. **Get the device** — in-game, type:
+> **v7 — rebuilt after studying [Stink-O/orbital-laser](https://github.com/Stink-O/orbital-laser).** A strike is now a staged
+> timeline over ~11 seconds, and the land is rebuilt as **real blocks** in expanding rings instead of one `explode` call.
+
+1. **Get the designator** — in-game:
    ```
    /arena:device
    ```
-   (also works: `/scriptevent arena:device`, or `/give @s arena:instellar_device` with cheats ON)
-2. **Hold the device** in your hand.
-3. **Aim** your crosshair at a block or entity (within **32 blocks**). The action bar shows `◎ Target: Xm | Use to BOOM!`
-4. **Press Use** (right-click / Use button / tap on the target) → beam + charge → **💥 BOOM!**
-   - Explosion particles + sparks + shockwave ring
-   - Vanilla explosion + extra damage + knockback
-   - Crater (destroys blocks in radius 2)
-   - Glowing **arena ring** of glowstone + expanding particle rings
-   - Fire at impact point
-5. Cooldown: **1.5 seconds** between shots.
-6. **No device needed:** aim at a block and run `/arena:ship` (or `/scriptevent arena:ship`) to call a strike.
+   (also `/scriptevent arena:device`, or `/give @s arena:instellar_device` with cheats on)
+2. **Pick a laser** — `/arena:next` cycles them:
+   | Laser | What it leaves |
+   |---|---|
+   | **PLASMA** | Crater fused into obsidian, black glass and magma; scorched basalt outward; glowstone ring |
+   | **GODLY** | Quartz-and-gold crater with a sea-lantern sigil ring, calcite scorch, flowers blooming outward |
+   | **NUKE** | A bomb falls in, mushroom cloud, big crater with a glassed floor, hundreds of blocks flattened |
+   | **ROD FROM GOD** | A tungsten rod drops, drives a narrow shaft to the deepstone, white-and-gold lined crater |
+3. **Hold the designator**, aim at the land (up to **64 blocks**) — the action bar shows `LASER | Target: Xm`.
+4. **Right-click / Use** → lock-on → charge → beam → **IMPACT**:
+   - camera shake on lock-on and a hard jolt at impact
+   - beam/charge particles converging on the point, or the bomb falling in (Nuke / Rod)
+   - the crater is then **carved ring by ring**, at 140 blocks per tick, so it never freezes the world
+   - scorch band, felled trees, rubble, thrown blocks dropping back, shockwave ring racing outward, smoke column
+   - the impact sound reaches you **late by distance** (343 blocks a second), like real thunder
+5. **Stop it** — `/arena:stop` ends the running strike (what it already did stays).
+6. Cooldown **3 seconds**; only one strike runs at a time.
 
-> Works on blocks, mobs, and players. The shooter is not hurt by their own blast.
-
----
+Tuning lives in `scripts/config.js`: `AIM_RANGE`, `BLOCKS_PER_TICK`, `EXPLOSION_POWER`, `CREATE_ARENA_RING`,
+`KEEP_TREES`, `DEFAULT_STRIKE`. Each laser's crater size, lining blocks and effects live in `scripts/strike.js`.
 
 ## 📥 Install
 
@@ -112,7 +120,8 @@ Edit `ArenaBlaster_RP/particles/*.json` → `particle_appearance_tint` gradient 
 ## 🧩 How It Works (for devs)
 
 - **Item:** `arena:instellar_device` (`items/instellar_device.json`)
-- **Script:** `scripts/main.js` (Script API 2.1.0, `min_engine_version` 1.26.0)
+- **Scripts:** `scripts/main.js` (designator, raycast, commands), `scripts/strike.js` (the four lasers + timeline),
+  `scripts/terrain.js` (block-edit engine), `scripts/config.js` (tuning) — Script API 2.1.0, `min_engine_version` 1.26.0
   - `getBlockFromViewDirection` + `getEntityFromViewDirection` → crosshair raycast
   - `playerUseItem` / `playerInteractWithBlock` / `playerInteractWithEntity` → fire trigger
   - `dimension.spawnParticle` → beam / charge / explosion / sparks / ring
