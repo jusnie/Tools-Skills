@@ -5,14 +5,9 @@
       "loop": true,
       "bones": {
         "instellar_device": {
-          "rotation": [90, 60, -40],
-          "position": [4, 12, 4],
-          "scale": 1.5
-        },
-        "x_axis": {
-          "rotation": [-15, 0, 0],
-          "position": [-1.5, 1, 0],
-          "scale": 0.7
+          "rotation": [95, -45, 115],
+          "position": [2.5, 6, 1.5],
+          "scale": 1.0
         }
       }
     },
@@ -20,9 +15,9 @@
       "loop": true,
       "bones": {
         "instellar_device": {
-          "rotation": [90, 60, -40],
-          "position": [-4, 12, 4],
-          "scale": 1.5
+          "rotation": [95, 45, -115],
+          "position": [-2.5, 6, 1.5],
+          "scale": 1.0
         }
       }
     },
@@ -31,7 +26,8 @@
       "bones": {
         "instellar_device": {
           "rotation": [90, 0, 0],
-          "position": [0.5, 13.5, -3]
+          "position": [0.5, 8, -1],
+          "scale": 1.0
         }
       }
     },
@@ -40,7 +36,8 @@
       "bones": {
         "instellar_device": {
           "rotation": [90, 0, 0],
-          "position": [-0.5, 13.5, -3]
+          "position": [-0.5, 8, -1],
+          "scale": 1.0
         }
       }
     }
