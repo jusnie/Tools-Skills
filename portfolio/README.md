@@ -19,6 +19,7 @@ portfolio/
 └── tools/
     ├── pixelfont.mjs       5×7 bitmap face → sprite mark, and the glyph dump
     ├── build-font.py       that bitmap → a real TTF/WOFF2 display face
+    ├── build-avatar-full.py  the 80×112 About sprite: capsule skeleton → cel bands → selout
     ├── avatar.sprite.json  the 16×16 mark, as ASCII art plus a colour key
     ├── sprites/            six 16×16 sprites for the sheet, same format
     │   ├── bench-1..4.json  the loading-screen lift, one per bar height
@@ -94,6 +95,18 @@ Four frames, four JSONs, same pipeline:
 for i in 1 2 3 4; do
   node tools/pixelfont.mjs --sprite tools/sprites/bench-$i.json --out assets/svg/sprite-bench-$i.svg --scale 1
 done
+```
+
+## The About sprite
+
+The full body is generated, not hand-placed, so it can be corrected without
+redrawing: a capsule skeleton (shoulder/elbow/wrist, hip/knee/ankle) gives the
+limbs their bend and taper, then each limb is shaded once with four hard cel
+bands and outlined with selout. Edit `tools/build-avatar-full.py`, not the JSON.
+
+```bash
+python3 tools/build-avatar-full.py
+node tools/pixelfont.mjs --sprite tools/sprites/avatar-full.json --out assets/svg/sprite-avatar-full.svg --scale 1
 ```
 
 ## The face
