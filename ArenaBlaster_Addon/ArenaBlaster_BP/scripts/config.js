@@ -39,4 +39,16 @@ export const CONFIG = {
 
   // Show the strike name + distance while aiming
   SHOW_STRIKE_NAME: true,
+
+  // --- cutscene camera ---
+  // true = the camera leaves your body and films the strike
+  CUTSCENE: true,
+  // how far the camera stands from the impact (blocks)
+  CUTSCENE_RADIUS: 26,
+  // how high it looks down from
+  CUTSCENE_HEIGHT: 14,
+  // easing time of the first camera move (seconds)
+  CUTSCENE_EASE: 1.6,
+  // total ticks before control is handed back (20 = 1 second)
+  CUTSCENE_HOLD_TICKS: 300,
 };

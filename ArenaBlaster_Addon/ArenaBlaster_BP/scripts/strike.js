@@ -37,6 +37,7 @@ import {
   mix,
   clamp,
 } from "./timeline.js";
+import { playCutscene, restoreCamera } from "./cutscene.js";
 
 // ------------------------------------------------------------
 // The lasers
@@ -344,6 +345,16 @@ export function fireStrike(player, target, key) {
   const charge = T_FIRE;
   const impactAt = charge;
 
+  // --- stage 0: the camera leaves the body ----------------------
+  // Viewer list: everyone nearby gets the same shot, like a shared cinematic.
+  let viewers = [];
+  try {
+    viewers = dimension.getPlayers({ location: center, maxDistance: CONFIG.CUTSCENE_RADIUS * 3 });
+  } catch (e) {
+    viewers = [];
+  }
+  playCutscene(player, center, plan, { viewers });
+
   // --- stage 1: lock-on -----------------------------------------
   title(player, `${plan.colour}${plan.title}`, "§7Target locked");
   bar(player, `§7Incoming: ${plan.colour}${plan.title}§7 — hold position`);
@@ -633,6 +644,7 @@ export function fireStrike(player, target, key) {
     system.runTimeout(() => {
       if (run.cancelled) return;
       bar(player, `§a§l${plan.title} COMPLETE§r §7— crater ${plan.crater.radius * 2} blocks across`);
+      restoreCamera(player);
       active.delete(player.id);
     }, 90);
   }, impactAt);

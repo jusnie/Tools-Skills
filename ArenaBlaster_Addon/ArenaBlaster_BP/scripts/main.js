@@ -7,6 +7,7 @@
 
 import { world, system, ItemStack, EntityComponentTypes } from "@minecraft/server";
 import { CONFIG } from "./config.js";
+import { restoreCamera, restoreAllCameras } from "./cutscene.js";
 import {
   fireStrike,
   STRIKES,
@@ -325,6 +326,25 @@ try {
     try {
       registry.registerCommand(
         {
+          name: "arena:camera",
+          description: "Give the camera back to the player (fixes a stuck cutscene camera)",
+          permissionLevel: 0,
+          cheatsRequired: false,
+        },
+        (origin) => {
+          const player = origin.sourceEntity;
+          system.run(() => {
+            if (player) restoreCamera(player);
+            else restoreAllCameras();
+          });
+          return { status: 0, message: "§7Camera restored." };
+        }
+      );
+    } catch (e) {}
+
+    try {
+      registry.registerCommand(
+        {
           name: "arena:stop",
           description: "Stop the running orbital strike",
           permissionLevel: 0,
@@ -334,6 +354,7 @@ try {
           const player = origin.sourceEntity;
           if (!player) return { status: 1, message: "Run this as a player." };
           const stopped = cancelStrike(player);
+          system.run(() => restoreCamera(player));
           return {
             status: 0,
             message: stopped ? "§7Strike stopped. What it already did stays." : "§7Nothing was running.",
@@ -345,6 +366,18 @@ try {
 } catch (e) {
   console.warn(`[Arena Blaster] custom command setup skipped: ${e}`);
 }
+
+// Safety net: if a world was saved mid-cutscene, hand the camera back on join.
+try {
+  world.afterEvents.playerSpawn.subscribe((event) => {
+    if (!event.initialSpawn) return;
+    system.runTimeout(() => {
+      try {
+        restoreCamera(event.player);
+      } catch (e) {}
+    }, 40);
+  });
+} catch (e) {}
 
 // Chat/scriptevent fallbacks: !device, !strike, /scriptevent arena:device
 try {

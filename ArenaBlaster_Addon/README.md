@@ -61,13 +61,14 @@ The device is now a **real 3D model in your hand** (not just a flat icon), built
    | **NUKE** | A bomb falls in, mushroom cloud, big crater with a glassed floor, hundreds of blocks flattened |
    | **ROD FROM GOD** | A tungsten rod drops, drives a narrow shaft to the deepstone, white-and-gold lined crater |
 3. **Hold the designator**, aim at the land (up to **64 blocks**) — the action bar shows `LASER | Target: Xm`.
-4. **Right-click / Use** → lock-on → charge → beam → **IMPACT**:
+4. **Right-click / Use** → the camera leaves your body and films it → lock-on → charge → beam → **IMPACT**:
    - camera shake on lock-on and a hard jolt at impact
    - beam/charge particles converging on the point, or the bomb falling in (Nuke / Rod)
    - the crater is then **carved ring by ring**, at 140 blocks per tick, so it never freezes the world
    - scorch band, felled trees, rubble, thrown blocks dropping back, shockwave ring racing outward, smoke column
    - the impact sound reaches you **late by distance** (343 blocks a second), like real thunder
-5. **Stop it** — `/arena:stop` ends the running strike (what it already did stays).
+5. **Stop it** — `/arena:stop` ends the running strike (what it already did stays) and gives the camera back.
+   Stuck camera? `/arena:camera` restores it instantly. It also restores itself on join, on cancel, and at the end of every strike.
 6. Cooldown **3 seconds**; only one strike runs at a time.
 
 Tuning lives in `scripts/config.js`: `AIM_RANGE`, `BLOCKS_PER_TICK`, `EXPLOSION_POWER`, `CREATE_ARENA_RING`,
